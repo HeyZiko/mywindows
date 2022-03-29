@@ -1,0 +1,178 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "leading_diamond": "\u256d",
+          "style": "diamond",
+          "template": "-",
+          "type": "text"
+        },
+        {
+          "background": "p:os-background",
+          "foreground": "p:os-foreground",
+          "leading_diamond": "\ue0b6",
+          "style": "diamond",
+          "template": "{{ .Icon }} \ue0b1 ",
+          "type": "os"
+        },
+        {
+          "background": "p:path-background",
+          "foreground": "p:path-foreground",
+          "properties": {
+            "folder_icon": "\ue5fe ",
+            "folder_separator_icon": "\\",
+            "home_icon": "\uf015",
+            "style": "agnoster_short"
+          },
+          "style": "plain",
+          "template": "<#ff479c>\uf74a</> {{ .Path }} \ue0b1 ",
+          "type": "path"
+        },
+        {
+          "background": "p:git-background",
+          "foreground": "p:git-foreground",
+          "foreground_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}#FF9248{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#ff4500{{ end }}",
+            "{{ if gt .Ahead 0 }}#B388FF{{ end }}",
+            "{{ if gt .Behind 0 }}#B388FF{{ end }}"
+          ],
+          "properties": {
+            "branch_max_length": 30,
+            "fetch_stash_count": true,
+            "fetch_status": true,
+            "fetch_upstream_icon": true
+          },
+          "style": "plain",
+          "template": "<#fffb38>{{ .UpstreamIcon }}{{ .HEAD }}</>{{ .BranchStatus }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uf692 {{ .StashCount }}{{ end }} ",
+          "type": "git"
+        },
+        {
+          "background": "p:language-background",
+          "foreground": "p:language-foreground",
+          "properties": {
+            "display_mode": "files",
+            "fetch_virtual_env": false
+          },
+          "style": "plain",
+          "template": " \ue235 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} ",
+          "type": "python"
+        },
+        {
+          "background": "p:executiontime-background",
+          "foreground": "p:executiontime-foreground",
+          "properties": {
+            "always_enabled": false,
+            "style": "austin",
+            "threshold": 500
+          },
+          "style": "plain",
+          "template": "\ufbab{{ .FormattedMs }}",
+          "type": "executiontime"
+        },
+        {
+          "background": "p:exit-background",
+          "foreground": "p:exit-foreground",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}#e91e63{{ end }}"
+          ],
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "diamond",
+          "template": "<parentBackground>\ue0b0</> \ue23a ",
+          "trailing_diamond": "\ue0b4",
+          "type": "exit"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "segments": [
+        {
+          "background": "p:battery-background",
+          "foreground": "p:battery-foreground",
+          "foreground_templates": [
+            "{{if eq \"Charging\" .State.String}}#40c4ff{{end}}",
+            "{{if eq \"Discharging\" .State.String}}#ff5722{{end}}",
+            "{{if eq \"Full\" .State.String}}#4caf50{{end}}"
+          ],
+          "leading_diamond": "\ue0b6",
+          "properties": {
+            "charged_icon": "\ue22f ",
+            "charging_icon": "\ue234 ",
+            "discharging_icon": "\ue231 "
+          },
+          "style": "diamond",
+          "template": " {{ if not .Error }}{{ .Icon }}{{ .Percentage }}\uf295 {{ end }}{{ .Error }}",
+          "type": "battery"
+        },
+        {
+          "background": "p:spotify-background",
+          "foreground": "p:spotify-foreground",
+          "properties": {
+            "paused_icon": "\uf04c ",
+            "playing_icon": "\uf04b ",
+            "stopped_icon": "\uf04d "
+          },
+          "style": "plain",
+          "template": "{{ .Track }}",
+          "type": "spotify"
+        },
+        {
+          "background": "p:time-background",
+          "foreground": "p:time-foreground",
+          "style": "diamond",
+          "template": " {{ .CurrentDate | date .Format }} ",
+          "trailing_diamond": "\ue0b4",
+          "type": "time"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "style": "plain",
+          "template": "\u2570-$",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "console_title_template": "{{ .Folder }} ",
+  "final_space": true,
+  "osc99": true,
+  "palette": {
+    "battery-background": "p:primary-background",
+    "battery-foreground": "p:primary-foreground",
+    "executiontime-background": "p:primary-background",
+    "executiontime-foreground": "p:primary-foreground",
+    "exit-background": "p:primary-background",
+    "exit-foreground": "green",
+    "git-background": "p:primary-background",
+    "git-foreground": "p:primary-foreground",
+    "language-background": "p:primary-background",
+    "language-foreground": "p:primary-foreground",
+    "os-background": "p:primary-background",
+    "os-foreground": "p:primary-foreground",
+    "path-background": "p:primary-background",
+    "path-foreground": "p:primary-foreground",
+    "primary-background": "#222222",
+    "primary-foreground": "#ffffff",
+    "root-background": "p:primary-background",
+    "root-foreground": "p:primary-foreground",
+    "spotify-background": "p:primary-background",
+    "spotify-foreground": "p:primary-foreground",
+    "time-background": "p:primary-background",
+    "time-foreground": "p:primary-foreground"
+  },
+  "version": 2
+}

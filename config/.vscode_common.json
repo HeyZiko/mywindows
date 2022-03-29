@@ -1,0 +1,14 @@
+{
+  // Personal preferences vscode's settings.json, typically found in $APPDATA/Code/User/settings.json (AKA %APPDATA%\Code\User\settings.json)
+  // All available settings: https://code.visualstudio.com/docs/getstarted/settings#_default-settings
+  // TODO: Find a way to include these values into the settings file, by overwriting existing settings and creating new settings where they don't exist.
+  "workbench.colorTheme": "Visual Studio 2019 Dark",
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "editor.tabSize": 2,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook"
+  }
+}

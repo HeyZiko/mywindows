@@ -1,0 +1,24 @@
+#=== Add the following line (uncommented) to the original .gitconfig file, with the real path and file to allow it to source from here. Note that gitconfig doesn't handle environment variables, so $CloudProfile doesn't work.
+#[include]
+#  path=$MyWindowsConfig/.gitconfig_common
+#===
+# For more examples: https://gist.github.com/johnpolacek/69604a1f6861129ef088
+
+[user]
+  name = Ziko Rajabali
+
+[core]
+  editor = vim # Advanced users only. Need to be fast with the keyboard.
+  #editor = code --wait # Visual Studio Code. Excellent option, but takes a bit longer to load
+
+[alias]
+  alias = !tput setaf 3 && echo "=== Finding all git aliases. No parameters accepted. ===" && tput sgr0 && echo && git config -l | grep alias
+  co = checkout
+  cob = checkout -b
+  b = branch
+  mergeff = merge --ff-only
+  main = !git checkout main && git pull origin
+  logg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+  logfind = !tput setaf 3 && echo "=== Searching git log. Expects a search term as the first argument. Accepts any arguments that work with grep. ===" && tput sgr0 && echo && git logg | grep
+  loggrep = logfind
+  

@@ -1,0 +1,51 @@
+### Browsers ###
+Mozilla.Firefox
+
+### System Utilities ###
+# 7zip.7zip
+# peazip #Included as a portable app
+# AxCrypt.AxCrypt #Included as a portable app
+# Adobe.Acrobat.Reader.32-bit
+# PDFsam.PDFsam #Included as a portable app
+# ElaborateBytes.VirtualCloneDrive #Not as important these days
+# Notepad++.Notepad++ #Included as a portable app
+Microsoft.PowerToys
+Microsoft.MouseWithoutBorders
+# AcroSoftware.CutePDFWriter
+Microsoft.WindowsTerminal
+Microsoft.PowerShell
+JanDeDobbeleer.OhMyPosh
+
+### Comms ###
+Microsoft.Teams
+SlackTechnologies.Slack
+# TeamViewer.TeamViewer.Host
+
+### Art ###
+# GIMP.GIMP
+# Inkscape.Inkscape
+
+### Development ###
+Microsoft.VisualStudioCode
+Docker.DockerDesktop
+Python.Python.3
+# Microsoft.AzureDataStudio
+dbeaver.dbeaver
+# WinMerge.WinMerge #Included as a portable app
+# Microsoft.AzureCLI
+# Microsoft.AzureCosmosEmulator
+# Microsoft.AzureDataCLI
+# Microsoft.AzureStorageEmulator
+# Microsoft.AzureStorageExplorer
+# Microsoft.SQLServerManagementStudio
+# Microsoft.VisualStudio.2019.Professional
+# Microsoft.VisualStudio.2022.Professional
+
+### Source control ###
+Git.Git
+GitHub.cli
+GitHub.GitLFS
+# Axosoft.GitKraken
+# Atlassian.Sourcetree
+# GitHub.GitHubDesktop
+GnuWin32.Make

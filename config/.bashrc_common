@@ -1,0 +1,47 @@
+#!/bin/sh
+#=== Add the following line (uncommented) to ~/.bash_profile, allowing it to source from here.
+#test -f $MyWindowsConfig/.bashrc_common && . $MyWindowsConfig/.bashrc_common
+#===
+
+#=== Establish a nix variant of the envvar $MyWindowsConfig, replacing windows paths with nix paths:
+export MyWindowsConfigNix=$(echo $MyWindowsConfig | sed 's/\\/\//g' | sed 's/C:/\/c/g')
+
+#=== Common CLI aliases
+alias ls='ls --almost-all --color --classify'
+alias grep='grep -in'
+#=== Aliases for echo response colours. There's soooo much to explore... see https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux/28938235#28938235
+alias echonormal='tput sgr0'
+alias echoreset='tput sgr0'
+alias echored='tput setaf 1'
+alias echogreen='tput setaf 2'
+alias echoyellow='tput setaf 3'
+alias echoblue='tput setaf 4'
+alias echopink='tput setaf 5'
+alias echocyan='tput setaf 6'
+alias echowhite='tput setaf 7'
+alias echoscream='tput setaf 1; tput setab 0'
+
+#=== Git aliases
+alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+alias mergeff="git merge --ff-only"
+alias fetch="git fetch"
+alias pull="git pull"
+alias push="git push"
+alias checkout="git checkout"
+
+#=== Dev aliases 
+alias src="cd /c/src/symend-deployments"
+alias vscode="code"
+
+#=== Establish the global git include if it doesn't already exist. 
+#==== It would have been preferable to use the environment variable directly in the git config, but git doesn't expand envvars grrrr.
+git config --global include.path $MyWindowsConfigNix/.gitconfig_common
+
+#=== Set up oh-my-posh
+eval "$(oh-my-posh init bash --config $MyWindowsConfig/.ohmyposh.json)"
+
+#=== Register ssh rsa keys so that the password isn't required at every git origin interaction
+eval $(ssh-agent -s)
+#ssh-add $CloudProfile/.ssh/ziko@zarconsulting.com/id_rsa
+ssh-add $CloudProfile/.ssh/ziko@rajabali.ca/id_rsa
+ssh-add $CloudProfile/.ssh/ziko.rajabali@symend.com/id_rsa

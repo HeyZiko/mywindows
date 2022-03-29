@@ -1,0 +1,34 @@
+"=== Add the following line (uncommented) to the original .vimrc file, allowing it to source from here.
+"execute 'source ' . substitute(substitute('/'.$MyWindowsConfig.'/.vimrc_common', ':\\','/', 'g'    ), '\\', '/', 'g') 
+"===
+
+" This was inspired by http://dougblack.io/words/a-good-vimrc.html
+
+" COLORS
+syntax enable " Enable syntax processing
+
+" TABS
+set tabstop=2 " Number of visual spaces per tab. Common for most programming. Alternative is 4.
+set softtabstop=2 " Number of spaces in a tab when editing. Stay consistent with tabstop.
+set expandtab " Tabs are spaces
+set shiftwidth=2 " Number of spaces when doing shifts using '>'
+
+" UI
+set number " Show line numbers
+" Highlight current line:
+"set cursorline 
+set showcmd " Show command in bottom bar
+filetype indent on " load filetype-specific indent files
+set wildmenu " Visual autocomplete for command menu
+set showmatch " Highlight matching brackets []{}()
+
+" SEARCH
+set incsearch " Search as characters are entered
+set hlsearch " Highlight matches
+
+" FOLDING
+set foldenable " Enable folding
+set foldlevelstart=10 " Open most folds by default
+set foldnestmax=10 " Nested folds maximum
+set foldmethod=indent " Fold based on indent level
+
