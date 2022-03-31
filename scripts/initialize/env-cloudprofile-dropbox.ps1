@@ -1,16 +1,26 @@
-. $PSScriptRoot\common-start-execution.ps1
+. "$((Get-Item $PSScriptRoot).parent)\common\start-execution.ps1"
 
+Write-White "
+========
+This script uncovers the dropbox location and sets or resets the CloudProfile environment variable.
+"
+if($env:CloudProfile) {
+  Write-DarkYellow "`$env:CloudProfile has already been set as $env:CloudProfile. 
+  Reset the CloudProfile environment variable?"
+  if($(choose "yn" -showOptions) -eq "n") {
+    exit 1
+  }
+  else {
+    Write-Red "When this script completes, review the PATH environment variable 
+    because there might some legacy paths that are no longer valid."
+    Write-Green "Resetting the CloudProfile environment variable."
+  }
+}
 
-Write-Info"========
-This script uncovers the dropbox location and sets / resets an environment variable for the shared path.
-========"
-prompt
-
-$profileSubfolder = "\AllAccounts" # The subfolders, if any, for the common profile 
-$portableBinSubfolder = "\AllAccounts\apps\bin" # The subfolders, if any, for portable binaries 
+$profileSubfolder = "\AllAccounts" # The subfolder, if any, for the common profile 
 
 # Find the dropbox folder. See this page for more info: https://help.dropbox.com/installs-integrations/desktop/locate-dropbox-folder
-Write-Info "Finding dropbox info.json file"
+Write-Host "Finding dropbox info.json file"
 $dropboxInfoJsonPath1 = "$env:APPDATA\Dropbox\info.json"
 $dropboxInfoJsonPath2 = "$env:LOCALAPPDATA\Dropbox\info.json"
 $whichDropboxInfoJsonPath = ""
@@ -29,31 +39,23 @@ if ([string]::IsNullOrWhiteSpace($whichDropboxInfoJsonPath))
     Tried Location 2: $dropboxInfoJsonPath2
   "
   prompt
+  exit 1
 }
 
 # Interpret the JSON to get the dropbox folder
-Write-Info "Getting dropbox path from $whichDropboxInfoJsonPath"
+Write-Host "Getting dropbox path from $whichDropboxInfoJsonPath"
 $dropboxInfoJson = get-content $whichDropboxInfoJsonPath | convertfrom-json
 $dropboxPath = $dropboxInfoJson.personal.path
 $dropboxProfilePath = "$dropboxPath$profileSubfolder"
-$dropboxProfileBinPath = "$dropboxPath$portableBinSubfolder"
 
-Write-DarkYellow "Establishing CloudProfile environment variable as $dropboxProfilePath"
+Write-Host "Establishing CloudProfile environment variable as $dropboxProfilePath"
 [Environment]::SetEnvironmentVariable('CloudProfile',"$dropboxProfilePath",'Machine')
 if($env:CloudProfile) {
   Write-Green "`$env:CloudProfile=$env:CloudProfile"
 }
 else {
   Write-Red "Failed to set `$env:CloudProfile. Consider running this script as Administrator."
+  exit 1
 }
 
-Write-DarkYellow "Add the portable binaries folder to the environment path"
-if(-not ($env:PATH -Like "*$dropboxProfileBinPath*"))
-{
-  SETX PATH "$env:PATH;$dropboxProfileBinPath"
-}
-if(-not ($env:PATH -Like "*$dropboxProfileBinPath*")){
-  Write-Red "Failed to set `$env:PATH. Consider running this script as Administrator."
-}
-
-. $PSScriptRoot\common-end-execution.ps1
+. "$((Get-Item $PSScriptRoot).parent)\common\end-execution.ps1"

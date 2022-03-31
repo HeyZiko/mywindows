@@ -7,5 +7,5 @@ function prompt
   until ( $choice.ControlKeyState -eq 0 ) 
   # Use the following if we want to exclude more than just the control keys (eg. F keys) 
   #until ( $choice.VirtualKeyCode -notin @( 16..19) + @(112..190) ); 
-  Write-Info
+  Write-White
 }

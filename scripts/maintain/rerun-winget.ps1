@@ -28,7 +28,7 @@ Param(
 	[alias("d")][switch]$dryrun
 )
 
-. $PSScriptRoot\common-start-execution.ps1
+. $env:MyWindowsScripts\common\start-execution.ps1
 
 $self = (Join-Path $PSScriptRoot (Split-Path $PSCommandPath -leaf))
 
@@ -180,4 +180,4 @@ if ($dryrun) {
 	"`nRun the command again without -dryrun to actually install or update packages"
 }
 
-. $PSScriptRoot\common-end-execution.ps1
+. $env:MyWindowsScripts\common\end-execution.ps1

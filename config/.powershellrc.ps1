@@ -1,7 +1,7 @@
 #=== Add the following line (uncommented) to $profile, 
 #    a variable available in any pwsh session containing the user's 
 #    pwsh config script.
-#. $MyWindowsConfig/.powershellrc.ps1
+#. $env:MyWindowsConfig/.powershellrc.ps1
 #===
 
 #== Common linux commands
@@ -35,7 +35,7 @@ Import-Module oh-my-posh
 oh-my-posh init pwsh --config "$env:MyWindowsConfig\.ohmyposh.json" | Invoke-Expression
 
 #=== Register ssh rsa keys so that the password isn't required at every git origin interaction
-#ssh-add $env:CloudProfile/.ssh/ziko@zarconsulting.com/id_rsa
-ssh-add $env:CloudProfile/.ssh/ziko@rajabali.ca/id_rsa
-ssh-add $env:CloudProfile/.ssh/ziko.rajabali@symend.com/id_rsa
+#ssh-add $env:CloudProfile\.ssh\ziko@zarconsulting.com\id_rsa
+ssh-add $env:CloudProfile\.ssh\ziko@rajabali.ca\id_rsa
+ssh-add $env:CloudProfile\.ssh\ziko.rajabali@symend.com\id_rsa
 

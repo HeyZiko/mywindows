@@ -1,8 +1,12 @@
-function Test-MyWindowsConfig
+function Test-AppExists
 {
-  Write-Info "PREREQUISITE: did you already configure `$env:MyWindowsConfig?
+  Param(
+    [string]$appName
+  )
+
+  Write-White "PREREQUISITE: is $appName installed and available?
   Here's what I found:
-  $env:MyWindowsConfig
+  $((& which $appName).Source)
   Does it look right?"
   if($(choose "yn" -showOptions) -eq 'n') {
     Write-Red "You've identified that the pre-requisite is wrong. Consider re-running or reviewing earlier scripts."

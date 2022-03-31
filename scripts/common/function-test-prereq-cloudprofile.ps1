@@ -1,6 +1,6 @@
 function Test-CloudProfile
 {
-  Write-Info "PREREQUISITE: did you already configure `$env:CloudProfile?
+  Write-White "PREREQUISITE: did you already configure `$env:CloudProfile?
   Here's what I found:
   $env:CloudProfile
   Does it look right?"
