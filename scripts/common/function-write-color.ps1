@@ -36,8 +36,3 @@ function Write-DarkYellow ($output) {
 function Write-White ($output) {
   Write-Color $output White
 }
-
-### Functional extensions
-function Write-White ($output) {
-  Write-White $output
-}
