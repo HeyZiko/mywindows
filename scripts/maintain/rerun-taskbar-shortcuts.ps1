@@ -29,7 +29,8 @@ if (-not (Test-Path $source)) {
   exit 1;
 }
 
-Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Copying the following shortcuts to $target`:`n$shortcuts"
+Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Copying the following shortcuts to $target :
+  $shortcuts"
 if(-not $DryRun) {
   Copy-Item -Path $shortcuts -Destination $target;
 }

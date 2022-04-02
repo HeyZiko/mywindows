@@ -11,7 +11,6 @@
 
 . "$env:MyWindowsScripts\common\start-execution.ps1"
 
-$newline = "`r`n"
 $fileToUpdate = "settings.json"
 # For the latest Windows Terminal settings.json target, see https://docs.microsoft.com/en-us/windows/terminal/install#settings-json-file"
 $target = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\$fileToUpdate";
@@ -45,6 +44,5 @@ else {
     }
   }
 }
-prompt
 
-. $env:MyWindowsScripts\common\end-execution.ps1
+. "$env:MyWindowsScripts\common\end-execution.ps1"

@@ -48,9 +48,9 @@ if($(choose "yn" -showOptions) -eq 'y') {
       Write-DarkYellow "Execution context doesn't have admin privileges. $($DryRun ? "DRYRUN: Pretend " : $null)Attempting to elevate."
       if($DryRun) {
         Write-White "DRYRUN: Running $script"
-        . "$script -DryRun"
+        . $script -DryRun
       }
-      Start-Process pwsh $($DryRun ? $null : "-Verb RunAs") "-NoProfile -ExecutionPolicy Bypass -Command $command";
+      Start-Process pwsh $($DryRun ? $null : "-Verb RunAs -NoProfile -ExecutionPolicy Bypass") -Command $command $($DryRun ? "-DryRun" : $null);
     }
     else {
       . $script
@@ -69,7 +69,7 @@ if($(choose "yn" -showOptions) -eq 'y'){
     # Skip env scripts, which needed elevation and were run in a previous block
     if($script -notlike "*env-*") {
       Write-White "$($DryRun ? "DRYRUN: " : $null)Running $script"
-      . "$script $($DryRun ? "-DryRun" : $null)"
+      . $script $($DryRun ? "-DryRun" : $null)
     }
   }  
 }
@@ -81,7 +81,8 @@ if($(choose "yn" -showOptions) -eq 'y'){
   foreach ($script in Get-ChildItem "$PSScriptRoot\maintain" -Filter "*.ps1")
   {
     Write-White "$($DryRun ? "DRYRUN: " : $null)Running $script"
-    . "$script $($DryRun ? "-DryRun" : $null)"
+    "Running . $script $($DryRun ? "-DryRun" : $null)"
+    . $script $($DryRun ? "-DryRun" : $null)
   }
 }
 

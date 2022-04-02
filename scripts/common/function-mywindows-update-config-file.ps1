@@ -67,7 +67,7 @@ function MyWindows-Update-Config-File
   }
   else {
     Write-White "Found $Target. Checking to see if you already configured it."
-    $existingText = Select-String -Path $Target -pattern  [Regex]::Escape($IncludeLine)
+    $existingText = Select-String -Path $Target -pattern $([Regex]::Escape($IncludeLine))
     if($existingText) {
       Write-White "Looks like you've already configured $Target, nothing more to do here!"
     }

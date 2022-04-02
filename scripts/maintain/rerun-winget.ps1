@@ -28,6 +28,7 @@ Param(
 	[string]$filename,
 	[alias("d")][switch]$DryRun
 )
+Write-Red "Dry run is $DryRun"
 
 . "$env:MyWindowsScripts\common\start-execution.ps1"
 
@@ -69,7 +70,7 @@ if ( $? ) {
 	}
 }
 else {
-	if ( $DryRun ) {
+	if ($DryRun) {
 		Write-Red "Winget not found; would attempt to install if -DryRun not specified"
 		exit 1
 	}
@@ -83,8 +84,7 @@ else {
 	"Attempting to install App Installer package..."
 	Add-AppxPackage -Path .\$package | Out-Default
 	if ( $? ) {
-		Write-Green "Installed winget; proceeding with -DryRun so you can safely see what will be installed"
-		$DryRun = $true
+		Write-Green "Installed winget."
 	}
 	else {
 		Write-Red "ERROR: Failed trying to install package $package"
@@ -139,11 +139,11 @@ $installedArray = $installed -split "\n"
 		
 		$installedPkg = $installedArray -match $pkg
 		if (($installedPkg) -or ((& $winget "list" "--id" "$_") -match $pkg)) {
-			if ($DryRun) {
-				Write-Yellow "Would attempt to upgrade: $_"
-			}
-			else {
-				if ($installedPkg -match "((\d+\.){2,4}(\s|...)+){2,}\.*winget$") {
+			if ($installedPkg -match "((\d+\.){2,4}(\s|...)+){2,}\.*winget$") {
+				if ($DryRun) {
+					Write-Yellow "Would attempt to upgrade package: $_"
+				}
+				else {
 					Write-Yellow "Upgrade package $($_)?"
 					$result = choose "yn" -showOptions
 					if ($result -eq 'y') {
@@ -154,9 +154,9 @@ $installedArray = $installed -split "\n"
 						Write-DarkYellow "Skipping upgrade of $_"
 					}
 				}
-				else {
-					Write-DarkYellow "$_ already installed; no upgrades available."
-				}
+			}
+			else {
+				Write-Green "$_ already installed; no upgrades available."
 			}
 		}
 		else {
