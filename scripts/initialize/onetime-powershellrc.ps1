@@ -1,12 +1,31 @@
-. $env:MyWindowsScripts\common\start-execution.ps1
+<#
+.SYNOPSIS
+  Configures bash_profile to read from our config location.
+
+.PARAMETER DryRun
+	Display what actions would be taken but don't actually do them.
+
+.LINK
+	https://github.com/HeyZiko/mywindows/
+#>
+
+param (
+  [alias("d")][switch]$DryRun
+)
+
+. "$env:MyWindowsScripts\common\start-execution.ps1"
 
 $newline = "`r`n"
 $fileToUpdate = $profile
 $target = $fileToUpdate;
 $source = '$env:MyWindowsConfig\.powershellrc.ps1'
-$include = ". $source"
+$include = "if($source -and (Test-Path $source)) {. $source}"
 
-Write-White "This script makes the primary $fileToUpdate read from $source."
+"
+========
+This script makes the primary $fileToUpdate read from $source.
+"
+#. "MyWindows-Update-Config-File $($DryRun ? "-DryRun" : $null) -Target $target -IncludeLine $include"
 
 Test-MyWindowsConfig
 
@@ -17,7 +36,7 @@ if (-not (Test-Path $target)) {
 }
 else {
   Write-White "Found $target. Checking to see if you already configured it."
-  $existingText = Select-String -Path $target -pattern $($source.Replace("\", "\\"))
+  $existingText = Select-String -Path $target -pattern [Regex]::Escape($source)
   Write-White "$existingText"
   if($existingText) {
     Write-White "Looks like you've already configured $target, nothing more to do here!"
@@ -28,6 +47,5 @@ else {
     $include | Set-Content $target
   }
 }
-prompt
 
-. $env:MyWindowsScripts\common\end-execution.ps1
+. "$env:MyWindowsScripts\common\end-execution.ps1"

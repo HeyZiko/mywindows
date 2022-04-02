@@ -1,34 +1,35 @@
-
 <#
 .SYNOPSIS
-	Install software packages using `winget` package manager.
+  Credit: Curtis Konelsky
+  Install software packages using `winget` package manager.
 
 	See: https://docs.microsoft.com/en-us/windows/package-manager/winget/
+
 .DESCRIPTION
 	Provided the name of a text file containing winget package ids, installs all packages that are not already installed.
 
 	NOTES:
-	-Installs `winget` if not already installed, then continues as if `-dryrun` were specified.
-	-If run without a `filename` argument, writes a sample input file to .\winget-initial-packages.txt if it doesn't already exist.
-	-Does not upgrade packages.
-	-This script should be run in an elevated PowerShell session to minimize UAC popups.
+	- Installs `winget` if not already installed.
+	- If run without a `filename` argument, attempts to find `.winget` from a handful of default locations.
+	- Attempts to upgrade packages.
+
 .PARAMETER filename
 	Name of a file containing winget package ids, one per line. Blank lines are OK. Lines beginning with '#' are considered comments.
 	Get package ids by running `winget search <name of some software>` and check the `id` column.		
-.PARAMETER dryrun
-	Display what actions would be taken but don't actually do them:
-	-show if `winget` would be installed
-	-show what packages would be installed
+
+.PARAMETER DryRun
+	Switch to display what actions would be taken but don't actually do them.
+
 .LINK
 	https://docs.microsoft.com/en-us/windows/package-manager/winget/
 #>
 
 Param(
 	[string]$filename,
-	[alias("d")][switch]$dryrun
+	[alias("d")][switch]$DryRun
 )
 
-. $env:MyWindowsScripts\common\start-execution.ps1
+. "$env:MyWindowsScripts\common\start-execution.ps1"
 
 $self = (Join-Path $PSScriptRoot (Split-Path $PSCommandPath -leaf))
 
@@ -63,13 +64,13 @@ if (-not ($packages)) {
 $winget = (& "$Env:windir\system32\where.exe" "winget")
 if ( $? ) {
 	"Found winget at: $winget"
-	if ($dryrun) {
-		Write-DarkYellow "Operating in -dryrun mode; no changes will be made"
+	if ($DryRun) {
+		Write-DarkYellow "Operating in -DryRun mode; no changes will be made"
 	}
 }
 else {
-	if ( $dryrun ) {
-		Write-Red "Winget not found; would attempt to install if -dryrun not specified"
+	if ( $DryRun ) {
+		Write-Red "Winget not found; would attempt to install if -DryRun not specified"
 		exit 1
 	}
 	Write-DarkYellow "Winget not found; attempting to fetch package from GitHub..."
@@ -82,8 +83,8 @@ else {
 	"Attempting to install App Installer package..."
 	Add-AppxPackage -Path .\$package | Out-Default
 	if ( $? ) {
-		Write-Green "Installed winget; proceeding with -dryrun so you can safely see what will be installed"
-		$dryrun = $true
+		Write-Green "Installed winget; proceeding with -DryRun so you can safely see what will be installed"
+		$DryRun = $true
 	}
 	else {
 		Write-Red "ERROR: Failed trying to install package $package"
@@ -138,7 +139,7 @@ $installedArray = $installed -split "\n"
 		
 		$installedPkg = $installedArray -match $pkg
 		if (($installedPkg) -or ((& $winget "list" "--id" "$_") -match $pkg)) {
-			if ($dryrun) {
+			if ($DryRun) {
 				Write-Yellow "Would attempt to upgrade: $_"
 			}
 			else {
@@ -159,7 +160,7 @@ $installedArray = $installed -split "\n"
 			}
 		}
 		else {
-			if ($dryrun) {
+			if ($DryRun) {
 				Write-Yellow "Would attempt to install package: $_"
 			} 
 			else {
@@ -176,8 +177,8 @@ $installedArray = $installed -split "\n"
 		}
 	}
 }
-if ($dryrun) {
-	"`nRun the command again without -dryrun to actually install or update packages"
+if ($DryRun) {
+	"`nRun the command again without -DryRun to actually install or update packages"
 }
 
-. $env:MyWindowsScripts\common\end-execution.ps1
+. "$env:MyWindowsScripts\common\end-execution.ps1"

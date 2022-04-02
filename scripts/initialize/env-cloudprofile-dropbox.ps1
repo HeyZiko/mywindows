@@ -1,3 +1,23 @@
+<#
+.SYNOPSIS
+  Sets up a dropbox subfolder as the CloudProfile environment variable.
+
+.PARAMETER DryRun
+	Display what actions would be taken but don't actually do them.
+
+.PARAMETER ProfileSubfolder
+	The subfolder in the dropbox root where profile and shared data is found.
+
+.LINK
+	https://github.com/HeyZiko/mywindows/
+#>
+
+param (
+  [alias("d")][switch]$DryRun,
+  # Default the profile subfolder to "AllAccounts" in the dropbox root:
+  [string]$ProfileSubfolder = "\AllAccounts" 
+)
+
 . "$((Get-Item $PSScriptRoot).parent)\common\start-execution.ps1"
 
 Write-White "
@@ -6,18 +26,16 @@ This script uncovers the dropbox location and sets or resets the CloudProfile en
 "
 if($env:CloudProfile) {
   Write-DarkYellow "`$env:CloudProfile has already been set as $env:CloudProfile. 
-  Reset the CloudProfile environment variable?"
+  $($DryRun ? "DRYRUN: Pretend " : $null)Reset the CloudProfile environment variable?"
   if($(choose "yn" -showOptions) -eq "n") {
     exit 1
   }
   else {
     Write-Red "When this script completes, review the PATH environment variable 
     because there might some legacy paths that are no longer valid."
-    Write-Green "Resetting the CloudProfile environment variable."
+    Write-Green "$($DryRun ? "DRYRUN: Pretend " : $null)Resetting the CloudProfile environment variable."
   }
 }
-
-$profileSubfolder = "\AllAccounts" # The subfolder, if any, for the common profile 
 
 # Find the dropbox folder. See this page for more info: https://help.dropbox.com/installs-integrations/desktop/locate-dropbox-folder
 Write-Host "Finding dropbox info.json file"
@@ -46,16 +64,18 @@ if ([string]::IsNullOrWhiteSpace($whichDropboxInfoJsonPath))
 Write-Host "Getting dropbox path from $whichDropboxInfoJsonPath"
 $dropboxInfoJson = get-content $whichDropboxInfoJsonPath | convertfrom-json
 $dropboxPath = $dropboxInfoJson.personal.path
-$dropboxProfilePath = "$dropboxPath$profileSubfolder"
+$dropboxProfilePath = "$dropboxPath$ProfileSubfolder"
 
-Write-Host "Establishing CloudProfile environment variable as $dropboxProfilePath"
-[Environment]::SetEnvironmentVariable('CloudProfile',"$dropboxProfilePath",'Machine')
-if($env:CloudProfile) {
-  Write-Green "`$env:CloudProfile=$env:CloudProfile"
-}
-else {
-  Write-Red "Failed to set `$env:CloudProfile. Consider running this script as Administrator."
-  exit 1
+Write-Host "$($DryRun ? "DRYRUN: Pretend " : $null)Establishing CloudProfile environment variable as $dropboxProfilePath"
+if(-not $DryRun) {
+  [Environment]::SetEnvironmentVariable('CloudProfile',"$dropboxProfilePath",'Machine')
+  if($env:CloudProfile) {
+    Write-Green "`$env:CloudProfile=$env:CloudProfile"
+  }
+  else {
+    Write-Red "Failed to set `$env:CloudProfile. Consider running this script as Administrator."
+    exit 1
+  }
 }
 
 . "$((Get-Item $PSScriptRoot).parent)\common\end-execution.ps1"

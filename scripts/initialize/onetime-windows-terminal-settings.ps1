@@ -1,4 +1,15 @@
-. $env:MyWindowsScripts\common\start-execution.ps1
+<#
+.SYNOPSIS
+  Configures bash_profile to read from our config location.
+
+.PARAMETER DryRun
+	Display what actions would be taken but don't actually do them.
+
+.LINK
+	https://github.com/HeyZiko/mywindows/
+#>
+
+. "$env:MyWindowsScripts\common\start-execution.ps1"
 
 $newline = "`r`n"
 $fileToUpdate = "settings.json"
@@ -7,7 +18,10 @@ $target = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\Lo
 $source = "$env:MyWindowsConfig\.windows-terminal.settings.json"
 $verificationContent = "574e775e-4f2a-5b96-ac1e-a2962a402336"
 
-Write-White "This script replaces the content in $fileToUpdate with the content in $source."
+Write-White "
+========
+This script overwrites $fileToUpdate with $source.
+"
 
 Test-MyWindowsConfig
 

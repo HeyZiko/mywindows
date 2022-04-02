@@ -1,7 +1,7 @@
 function prompt
 {
   # Pause for input
-  Write-Host -NoNewLine 'Press any key to continue...';
+  Write-Host -NoNewLine 'Press any key to continue...`n';
   # Exclude control keys to allow CTRL+C to cancel
   Do {$choice = $host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')} 
   until ( $choice.ControlKeyState -eq 0 ) 
