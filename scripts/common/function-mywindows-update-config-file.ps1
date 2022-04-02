@@ -52,7 +52,7 @@ function MyWindows-Update-Config-File
   This script makes '$Target' read from a source
   "
 
-  Test-MyWindowsConfig $($DryRun ? "-DryRun " : $null)
+  Test-MyWindowsConfig
 
   Write-White "Checking for $Target"
   if (-not (Test-Path $Target)) {
@@ -69,10 +69,10 @@ function MyWindows-Update-Config-File
     Write-White "Found $Target. Checking to see if you already configured it."
     $existingText = Select-String -Path $Target -pattern $([Regex]::Escape($IncludeLine))
     if($existingText) {
-      Write-White "Looks like you've already configured $Target, nothing more to do here!"
+      Write-Green "Looks like you've already configured $Target, nothing more to do here!"
     }
     else {
-      Write-White "You haven't configured $Target yet. $($DryRun ? "DRYRUN: Pretend " : $null)Updating it now."
+      Write-DarkYellow "You haven't configured $Target yet. $($DryRun ? "DRYRUN: Pretend " : $null)Updating it now."
       $IncludeLineMargined += ((Get-Content $Target) -join "$NewLine")
       if($DryRun) {
         Write-White "DRYRUN: Would have written the following into $Target :"

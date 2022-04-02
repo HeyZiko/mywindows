@@ -6,14 +6,14 @@ function choose
   )
   
   if(-not $choices) {
-    Write-Host "Please specify the characters that the user can choose from, eg:"
-    Write-Host "> choose ""yn"""
+    Write-DarkYellow "Please specify the characters that the user can choose from, eg:"
+    Write-DarkYellow "> choose ""yn"""
   }
 
   $characters = $choices.ToCharArray()
 
   if($showOptions) {
-    Write-Host "Options: $(foreach ($letter in $characters) { "$letter,"})EOL".Replace(",EOL","")
+    Write-White "Options: $(foreach ($letter in $characters) { "$letter,"})EOL".Replace(",EOL","")
   }
 
   #Pause for input

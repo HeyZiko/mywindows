@@ -21,19 +21,19 @@ This script sets up some core environment variables for the scripts and config t
 "
 if($env:MyWindowsScripts -and $env:MyWindowsConfig) {
   Write-DarkYellow "`$env:MyWindowsScripts has already been set as $env:MyWindowsScripts
-  and `$env:MyWindowsCommon has already been set as $env:MyWindowsCommon.
+  and `$env:MyWindowsConfig has already been set as $env:MyWindowsConfig.
   $($DryRun ? "DRYRUN: Pretend " : $null)Reset these environment variables?"
   if($(choose "yn" -showOptions) -eq "n") {
     exit 1
   }
   else {
-    Write-Green "$($DryRun ? "DRYRUN: Pretend " : $null)Resetting the environment variables MyWindowsScripts and MyWindowsCommon."
+    Write-Green "$($DryRun ? "DRYRUN: Pretend " : $null)Resetting the environment variables MyWindowsScripts and MyWindowsConfig."
   }
 }
 
 
-$MyWindowsConfig = "$((Get-Item $PSScriptRoot).parent)\config"
-$MyWindowsScripts = "$PSScriptRoot"
+$MyWindowsConfig = "$((Get-Item $PSScriptRoot).parent.parent)\config"
+$MyWindowsScripts = "$((Get-Item $PSScriptRoot).parent)"
 Write-DarkYellow "$($DryRun ? "DRYRUN: Pretend " : $null)Establishing MyWindowsConfig environment variable as $MyWindowsConfig"
 if (-not $DryRun) {
   [Environment]::SetEnvironmentVariable('MyWindowsConfig',"$MyWindowsConfig",'Machine')

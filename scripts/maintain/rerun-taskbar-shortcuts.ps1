@@ -21,7 +21,7 @@ Write-White "
 This script adds pre-built taskbar shortcuts.
 "
 
-Test-MyWindowsConfig $($DryRun ? "-DryRun " : $null)
+Test-MyWindowsConfig
 
 if (-not (Test-Path $source)) {
   Write-White("Taskbar shortcut folder is missing. Expected:

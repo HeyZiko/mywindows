@@ -21,11 +21,11 @@ Write-White "
 This script adds a bin folder from CloudProfile to the PATH environment variable.
 "
 
-Test-CloudProfile $($DryRun ? "-DryRun " : $null)
+Test-CloudProfile
 
 $portableBinSubfolder = "$env:CloudProfile\apps\bin" # The subfolder, if any, for portable binaries 
 
-Write-DarkYellow "$($DryRun ? "DRYRUN: Pretend " : $null)Adding the portable binaries folder to the environment path"
+Write-DarkYellow "$($DryRun ? "DRYRUN: Pretend " : $null)Adding the portable binaries folder $portableBinSubfolder to the environment path"
 if(-not $DryRun) {
   if(-not ($env:PATH -Like "*$portableBinSubfolder*"))
   {

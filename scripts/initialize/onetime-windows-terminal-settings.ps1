@@ -34,7 +34,7 @@ else {
   $existingText = Select-String -Path $target -pattern $verificationContent
   Write-White "$existingText"
   if($existingText) {
-    Write-White "Looks like you've already configured $target, nothing more to do here!"
+    Write-Green "Looks like you've already configured $target, nothing more to do here!"
   }
   else {
     Write-White "You haven't configured $target yet. Overwrite it now?"

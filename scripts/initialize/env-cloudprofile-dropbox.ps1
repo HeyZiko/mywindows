@@ -31,14 +31,12 @@ if($env:CloudProfile) {
     exit 1
   }
   else {
-    Write-Red "When this script completes, review the PATH environment variable 
-    because there might some legacy paths that are no longer valid."
     Write-Green "$($DryRun ? "DRYRUN: Pretend " : $null)Resetting the CloudProfile environment variable."
   }
 }
 
 # Find the dropbox folder. See this page for more info: https://help.dropbox.com/installs-integrations/desktop/locate-dropbox-folder
-Write-Host "Finding dropbox info.json file"
+Write-White "Finding dropbox info.json file"
 $dropboxInfoJsonPath1 = "$env:APPDATA\Dropbox\info.json"
 $dropboxInfoJsonPath2 = "$env:LOCALAPPDATA\Dropbox\info.json"
 $whichDropboxInfoJsonPath = ""
@@ -56,17 +54,16 @@ if ([string]::IsNullOrWhiteSpace($whichDropboxInfoJsonPath))
     Tried Location 1: $dropboxInfoJsonPath1
     Tried Location 2: $dropboxInfoJsonPath2
   "
-  prompt
   exit 1
 }
 
 # Interpret the JSON to get the dropbox folder
-Write-Host "Getting dropbox path from $whichDropboxInfoJsonPath"
+Write-White "Getting dropbox path from $whichDropboxInfoJsonPath"
 $dropboxInfoJson = get-content $whichDropboxInfoJsonPath | convertfrom-json
 $dropboxPath = $dropboxInfoJson.personal.path
 $dropboxProfilePath = "$dropboxPath$ProfileSubfolder"
 
-Write-Host "$($DryRun ? "DRYRUN: Pretend " : $null)Establishing CloudProfile environment variable as $dropboxProfilePath"
+Write-DarkYellow "$($DryRun ? "DRYRUN: Pretend " : $null)Establishing CloudProfile environment variable as $dropboxProfilePath"
 if(-not $DryRun) {
   [Environment]::SetEnvironmentVariable('CloudProfile',"$dropboxProfilePath",'Machine')
   if($env:CloudProfile) {

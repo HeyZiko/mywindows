@@ -1,6 +1,6 @@
 ### Base function
 function Write-Color ($output, $color) {
-  Write-Host "$output" -ForegroundColor $color
+  Write-Host "$Indent$output" -ForegroundColor $color
 }
 
 ### Helper extensions

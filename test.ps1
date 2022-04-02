@@ -1,16 +1,15 @@
 
-Param (
-  [alias("d")][switch]$DryRun
-  #[alias("e")][switch]$EnvSetup,
-  #[alias("i")][switch]$Initialization,
-  #[alias("m")][switch]$Maintenance
-)
-
+Write-White "Level 0"
 . "$((Get-Item $PSScriptRoot))\scripts\common\start-execution.ps1"
-
-$DryRun.IsPresent
-$DryRun.PSStandardMembers
-$DryRun.ToString()
-$DryRun ? "yes" : "no"
+Write-White "Level 1"
+. "$((Get-Item $PSScriptRoot))\scripts\common\start-execution.ps1"
+Write-White "Level 2"
+. "$((Get-Item $PSScriptRoot))\scripts\common\start-execution.ps1"
+Write-White "Level 3"
 
 . "$((Get-Item $PSScriptRoot))\scripts\common\end-execution.ps1"
+Write-White "Level 2"
+. "$((Get-Item $PSScriptRoot))\scripts\common\end-execution.ps1"
+Write-White "Level 1"
+. "$((Get-Item $PSScriptRoot))\scripts\common\end-execution.ps1"
+Write-White "Level 0"

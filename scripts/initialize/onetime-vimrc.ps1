@@ -16,6 +16,6 @@ $target = "~\$fileToUpdate";
 $source = '$MyWindowsConfig."/.vimrc_common"'
 $include = "execute 'source ' . substitute(substitute('/'.$source, ':\\','/', 'g'    ), '\\', '/', 'g')"
 
-. MyWindows-Update-Config-File $($DryRun ? "-DryRun" : $null) -Target $target -IncludeLine $include
+. MyWindows-Update-Config-File -DryRun:$DryRun -Target $target -IncludeLine $include
 
 . "$env:MyWindowsScripts\common\end-execution.ps1"

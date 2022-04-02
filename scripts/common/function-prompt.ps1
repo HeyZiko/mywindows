@@ -1,4 +1,4 @@
-function prompt
+function Wait-Prompt
 {
   # Pause for input
   Write-Host -NoNewLine 'Press any key to continue...`n';

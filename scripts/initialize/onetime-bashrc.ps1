@@ -15,7 +15,6 @@ param (
 
 . "$env:MyWindowsScripts\common\start-execution.ps1"
 
-$newline = "`r`n"
 $fileToUpdate = ".bash_profile"
 $target = "~\$fileToUpdate";
 $source = '$MyWindowsConfig/.bashrc_common'
@@ -26,6 +25,6 @@ Write-White "
 This script makes the primary $fileToUpdate read from $source.
 "
 
-. MyWindows-Update-Config-File $($DryRun ? "-DryRun" : $null) -Target $target -IncludeLine $include
+. MyWindows-Update-Config-File -DryRun:$DryRun -Target $target -IncludeLine $include
 
 . "$env:MyWindowsScripts\common\end-execution.ps1"

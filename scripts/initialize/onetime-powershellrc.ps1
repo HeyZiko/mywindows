@@ -19,6 +19,6 @@ $target = $profile;
 $source = '$env:MyWindowsConfig\.powershellrc.ps1'
 $include = "if($source -and (Test-Path $source)) {. $source}"
 
-. "MyWindows-Update-Config-File $($DryRun ? "-DryRun" : $null) -Target $target -IncludeLine $include"
+. MyWindows-Update-Config-File -DryRun:$DryRun -Target $target -IncludeLine $include
 
 . "$env:MyWindowsScripts\common\end-execution.ps1"
