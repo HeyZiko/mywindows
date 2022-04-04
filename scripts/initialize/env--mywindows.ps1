@@ -58,6 +58,4 @@ if (-not $DryRun) {
   }
 }
 
-pause;
-
 . "$((Get-Item $PSScriptRoot).parent)\common\end-execution.ps1"
