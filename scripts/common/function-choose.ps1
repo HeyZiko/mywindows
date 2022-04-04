@@ -1,4 +1,4 @@
-function choose
+function Wait-Choose
 {
   Param(
     [string]$choices,
@@ -6,8 +6,8 @@ function choose
   )
   
   if(-not $choices) {
-    Write-DarkYellow "Please specify the characters that the user can choose from, eg:"
-    Write-DarkYellow "> choose ""yn"""
+    Write-DarkYellow "Please specify the characters that the user can Wait-Choose from, eg:"
+    Write-DarkYellow "> Wait-Choose ""yn"""
   }
 
   $characters = $choices.ToCharArray()

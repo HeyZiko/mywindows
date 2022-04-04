@@ -38,7 +38,7 @@ else {
   }
   else {
     Write-White "You haven't configured $target yet. Overwrite it now?"
-    if ($(choose "yn" -showOptions) -eq 'y')
+    if ($(Wait-Choose "yn" -showOptions) -eq 'y')
     {
       Copy-Item $source -Destination $target
     }

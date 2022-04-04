@@ -27,7 +27,7 @@ This script uncovers the dropbox location and sets or resets the CloudProfile en
 if($env:CloudProfile) {
   Write-DarkYellow "`$env:CloudProfile has already been set as $env:CloudProfile. 
   $($DryRun ? "DRYRUN: Pretend " : $null)Reset the CloudProfile environment variable?"
-  if($(choose "yn" -showOptions) -eq "n") {
+  if($(Wait-Choose "yn" -showOptions) -eq "n") {
     exit 1
   }
   else {

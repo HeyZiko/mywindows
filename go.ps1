@@ -37,7 +37,7 @@ param (
 Write-White "======"
 Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Run the one-time environment variable setup scripts?"
 Write-White "Typically this is done when first setting up a new machine or when performing an overhaul."
-if($(choose "yn" -showOptions) -eq 'y') {
+if($(Wait-Choose "yn" -showOptions) -eq 'y') {
   foreach ($script in Get-ChildItem "$PSScriptRoot\scripts\initialize" -Filter "env*.ps1")
   {
     Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Running $script"
@@ -56,7 +56,7 @@ if($(choose "yn" -showOptions) -eq 'y') {
 
       if($DryRun) {
         # In Dry-Run mode, don't elevate to run as admin
-        Start-Process -Wait -NoNewWindow -FilePath pwsh -ArgumentList $procArgumentList
+        Start-Process -Wait -FilePath pwsh -ArgumentList $procArgumentList
       }
       else {
         # Run as admin
@@ -73,7 +73,7 @@ if($(choose "yn" -showOptions) -eq 'y') {
 Write-White "======"
 Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Run the one-time initialization scripts?"
 Write-White "Typically this is done when first setting up a new machine or when performing an overhaul."
-if($(choose "yn" -showOptions) -eq 'y'){
+if($(Wait-Choose "yn" -showOptions) -eq 'y'){
   foreach ($script in Get-ChildItem "$PSScriptRoot\scripts\initialize" -Filter "*.ps1")
   {
     # Skip env scripts, which needed elevation and were run in a previous block
@@ -87,7 +87,7 @@ if($(choose "yn" -showOptions) -eq 'y'){
 #=== Step 3: Run all maintain scripts
 Write-White "======"
 Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Run the maintenance scripts?"
-if($(choose "yn" -showOptions) -eq 'y'){
+if($(Wait-Choose "yn" -showOptions) -eq 'y'){
   foreach ($script in Get-ChildItem "$PSScriptRoot\scripts\maintain" -Filter "*.ps1")
   {
     Write-White "Running $script -DryRun:$DryRun"

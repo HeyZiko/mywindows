@@ -144,7 +144,7 @@ $installedArray = $installed -split "\n"
 				}
 				else {
 					Write-Yellow "Upgrade package $($_)?"
-					$result = choose "yn" -showOptions
+					$result = Wait-Choose "yn" -showOptions
 					if ($result -eq 'y') {
 						Write-Green "Upgrading package $_"
 						& "$winget" "upgrade" "$_"
@@ -164,7 +164,7 @@ $installedArray = $installed -split "\n"
 			} 
 			else {
 				Write-Yellow "Install package $($_)?"
-				$result = choose "yn" -showOptions
+				$result = Wait-Choose "yn" -showOptions
 				if ($result -eq 'y') {
 					Write-Green "Installing package $_"
 					& "$winget" "install" "$_"

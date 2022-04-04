@@ -38,7 +38,7 @@ if($sshAgentService.StartupType -ne 'Disabled') {
   Write-DarkYellow "ssh-agent is already enabled. Details:
   $sshAgentService
   $($DryRun ? "DRYRUN: Pretend " : $null)Reset startup type to manual?"
-  if($(choose "yn" -showOptions) -eq "n") {
+  if($(Wait-Choose "yn" -showOptions) -eq "n") {
     exit 1
   }
   else {

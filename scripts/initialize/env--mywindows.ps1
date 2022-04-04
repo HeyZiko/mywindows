@@ -23,7 +23,7 @@ if($env:MyWindowsScripts -and $env:MyWindowsConfig) {
   Write-DarkYellow "`$env:MyWindowsScripts has already been set as $env:MyWindowsScripts
   and `$env:MyWindowsConfig has already been set as $env:MyWindowsConfig.
   $($DryRun ? "DRYRUN: Pretend " : $null)Reset these environment variables?"
-  if($(choose "yn" -showOptions) -eq "n") {
+  if($(Wait-Choose "yn" -showOptions) -eq "n") {
     exit 1
   }
   else {
@@ -57,5 +57,7 @@ if (-not $DryRun) {
     exit 1
   }
 }
+
+pause;
 
 . "$((Get-Item $PSScriptRoot).parent)\common\end-execution.ps1"
