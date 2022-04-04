@@ -28,7 +28,6 @@ Param(
 	[string]$filename,
 	[alias("d")][switch]$DryRun
 )
-Write-Red "Dry run is $DryRun"
 
 . "$env:MyWindowsScripts\common\start-execution.ps1"
 
