@@ -57,13 +57,11 @@ function MyWindows-Update-Config-File
   Write-White "Checking for $Target"
   if (-not (Test-Path $Target)) {
     Write-White "No $Target found, $($DryRun ? "DRYRUN: Pretend " : $null)creating it."
-    if($DryRun) {
-      Write-White "DRYRUN: Would have written the following into $Target :"
-      Write-Cyan $IncludeLineMargined
-    }
-    else {
+    if(-not $DryRun) {
       $IncludeLineMargined | Set-Content $Target
     }
+    Write-Green "$($DryRun ? "DRYRUN: Would have " : $null)Added the following into $Target :"
+    Write-Cyan $IncludeLineMargined
   }
   else {
     Write-White "Found $Target. Checking to see if you already configured it."
@@ -74,13 +72,11 @@ function MyWindows-Update-Config-File
     else {
       Write-DarkYellow "You haven't configured $Target yet. $($DryRun ? "DRYRUN: Pretend " : $null)Updating it now."
       $IncludeLineMargined += ((Get-Content $Target) -join "$NewLine")
-      if($DryRun) {
-        Write-White "DRYRUN: Would have written the following into $Target :"
-        Write-Cyan $IncludeLineMargined
-      }
-      else {
+      if(-not $DryRun) {
         $IncludeLineMargined | Set-Content $Target
       }
+      Write-Green "$($DryRun ? "DRYRUN: Would have " : $null)Added the following into $Target :"
+      Write-Cyan $IncludeLineMargined
     }
   }
 }
