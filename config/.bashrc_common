@@ -42,6 +42,8 @@ eval "$(oh-my-posh init bash --config $MyWindowsConfig/.ohmyposh.json)"
 
 #=== Register ssh rsa keys so that the password isn't required at every git origin interaction
 eval $(ssh-agent -s)
-#ssh-add $CloudProfile/.ssh/ziko@zarconsulting.com/id_rsa
-ssh-add $CloudProfile/.ssh/ziko@rajabali.ca/id_rsa
-ssh-add $CloudProfile/.ssh/ziko.rajabali@symend.com/id_rsa
+
+for id in $(find $CloudProfile/.ssh -name id_rsa)
+do
+  ssh-add $id
+done
