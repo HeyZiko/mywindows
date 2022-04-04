@@ -31,14 +31,14 @@ param (
   #[alias("m")][switch]$Maintenance
 )
 
-. "$PSScriptRoot\common\start-execution.ps1"
+. "$PSScriptRoot\scripts\common\start-execution.ps1"
 
 #=== Step 1: Initialize the environment variables
 Write-White "======"
 Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Run the one-time environment variable setup scripts?"
 Write-White "Typically this is done when first setting up a new machine or when performing an overhaul."
 if($(choose "yn" -showOptions) -eq 'y') {
-  foreach ($script in Get-ChildItem "$PSScriptRoot\initialize" -Filter "env*.ps1")
+  foreach ($script in Get-ChildItem "$PSScriptRoot\scripts\initialize" -Filter "env*.ps1")
   {
     Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Running $script"
     $identity = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
@@ -60,7 +60,7 @@ if($(choose "yn" -showOptions) -eq 'y') {
       }
       else {
         # Run as admin
-        Start-Process -Wait -NoNewWindow -Verb Runas -FilePath pwsh -ArgumentList $procArgumentList
+        Start-Process -Wait -Verb Runas -FilePath pwsh -ArgumentList $procArgumentList
       }
     }
     else {
@@ -74,7 +74,7 @@ Write-White "======"
 Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Run the one-time initialization scripts?"
 Write-White "Typically this is done when first setting up a new machine or when performing an overhaul."
 if($(choose "yn" -showOptions) -eq 'y'){
-  foreach ($script in Get-ChildItem "$PSScriptRoot\initialize" -Filter "*.ps1")
+  foreach ($script in Get-ChildItem "$PSScriptRoot\scripts\initialize" -Filter "*.ps1")
   {
     # Skip env scripts, which needed elevation and were run in a previous block
     if($script -notlike "*env-*") {
@@ -88,11 +88,11 @@ if($(choose "yn" -showOptions) -eq 'y'){
 Write-White "======"
 Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Run the maintenance scripts?"
 if($(choose "yn" -showOptions) -eq 'y'){
-  foreach ($script in Get-ChildItem "$PSScriptRoot\maintain" -Filter "*.ps1")
+  foreach ($script in Get-ChildItem "$PSScriptRoot\scripts\maintain" -Filter "*.ps1")
   {
     Write-White "Running $script -DryRun:$DryRun"
     . $script -DryRun:$DryRun
 }
 }
 
-. "$PSScriptRoot\common\end-execution.ps1"
+. "$PSScriptRoot\scripts\common\end-execution.ps1"
