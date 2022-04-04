@@ -37,7 +37,7 @@ $MyWindowsScripts = "$((Get-Item $PSScriptRoot).parent)"
 Write-DarkYellow "$($DryRun ? "DRYRUN: Pretend " : $null)Establishing MyWindowsConfig environment variable as $MyWindowsConfig"
 if (-not $DryRun) {
   [Environment]::SetEnvironmentVariable('MyWindowsConfig',"$MyWindowsConfig",'Machine')
-  if($env:MyWindowsConfig) {
+  if($?) {
     Write-Green "`$env:MyWindowsConfig=$env:MyWindowsConfig"
   }
   else {
@@ -49,7 +49,7 @@ if (-not $DryRun) {
 Write-DarkYellow "$($DryRun ? "DRYRUN: Pretend " : $null)Establishing MyWindowsScripts environment variable as $MyWindowsScripts"
 if (-not $DryRun) {
   [Environment]::SetEnvironmentVariable("MyWindowsScripts","$MyWindowsScripts",'Machine')
-  if($env:MyWindowsScripts) {
+  if($?) {
     Write-Green "`$env:MyWindowsScripts=$env:MyWindowsScripts"
   }
   else {

@@ -45,12 +45,26 @@ if($(choose "yn" -showOptions) -eq 'y') {
     $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
     if (-not $identity.IsInRole($adminRole)) {
       Write-DarkYellow "Execution context doesn't have admin privileges. $($DryRun ? "DRYRUN: Pretend " : $null)Attempting to elevate."
-      $command = "$script -DryRun:`$$DryRun; & Read-Host -Prompt 'Press Enter to exit';"
-      Write-White "Running $command"
-      Start-Process pwsh "$($DryRun ? $null : "-Verb RunAs") -ExecutionPolicy Bypass -NoProfile -Command $command"
+
+      $scriptWithArgs = "$script $($DryRun ? "-DryRun" : $null)" 
+      Write-White "Running $scriptWithArgs"
+
+      $pwshExecutionPolicy = "-ExecutionPolicy Bypass"
+      $pwshNoProfile = "-NoProfile"
+      $pwshFile = "-File $scriptWithArgs"
+      $procArgumentList = "$pwshExecutionPolicy $pwshNoProfile $pwshFile"
+
+      if($DryRun) {
+        # In Dry-Run mode, don't elevate to run as admin
+        Start-Process -Wait -NoNewWindow -FilePath pwsh -ArgumentList $procArgumentList
+      }
+      else {
+        # Run as admin
+        Start-Process -Wait -NoNewWindow -Verb Runas -FilePath pwsh -ArgumentList $procArgumentList
+      }
     }
     else {
-      . $script
+      . $script -DryRun:$DryRun
     }
   }
 }
@@ -64,7 +78,7 @@ if($(choose "yn" -showOptions) -eq 'y'){
   {
     # Skip env scripts, which needed elevation and were run in a previous block
     if($script -notlike "*env-*") {
-      Write-White "$($DryRun ? "DRYRUN: " : $null)Running $script"
+      Write-White "Running $script -DryRun:$DryRun"
       . $script -DryRun:$DryRun
     }
   }  
@@ -76,9 +90,9 @@ Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Run the maintenance scripts?
 if($(choose "yn" -showOptions) -eq 'y'){
   foreach ($script in Get-ChildItem "$PSScriptRoot\maintain" -Filter "*.ps1")
   {
-    Write-White "$($DryRun ? "DRYRUN: " : $null)Running $script"
+    Write-White "Running $script -DryRun:$DryRun"
     . $script -DryRun:$DryRun
-  }
+}
 }
 
 . "$PSScriptRoot\common\end-execution.ps1"

@@ -1,7 +1,7 @@
 #=== Add the following line (uncommented) to $profile, 
 #    a variable available in any pwsh session containing the user's 
 #    pwsh config script.
-#. $env:MyWindowsConfig/.powershellrc.ps1
+#if (Test-Path $env:MyWindowsConfig\.powershellrc.ps1) { . $env:MyWindowsConfig\.powershellrc.ps1 }
 #===
 
 #== Common linux commands

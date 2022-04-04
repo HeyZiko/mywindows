@@ -17,7 +17,7 @@ param (
 
 $target = $profile;
 $source = '$env:MyWindowsConfig\.powershellrc.ps1'
-$include = "if($source -and (Test-Path $source)) {. $source}"
+$include = "if(Test-Path $source) { . $source }"
 
 . MyWindows-Update-Config-File -DryRun:$DryRun -Target $target -IncludeLine $include
 

@@ -29,10 +29,13 @@ Write-DarkYellow "$($DryRun ? "DRYRUN: Pretend " : $null)Adding the portable bin
 if(-not $DryRun) {
   if(-not ($env:PATH -Like "*$portableBinSubfolder*"))
   {
-    SETX PATH "$env:PATH;$portableBinSubfolder"
-  }
-  if(-not ($env:PATH -Like "*$portableBinSubfolder*")){
-    Write-Red "Failed to set `$env:PATH. Consider running this script as Administrator."
+    [Environment]::SetEnvironmentVariable('PATH',"$env:PATH;$portableBinSubfolder",'Machine')  
+    if($?) {
+      Write-Green "Added $portableBinSubfolder to `$env:PATH"
+    }
+    else {
+      Write-Red "Failed to add $portableBinSubfolder `$env:PATH. Consider running this script as Administrator."
+    }
   }
 }
 

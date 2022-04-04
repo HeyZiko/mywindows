@@ -66,7 +66,7 @@ $dropboxProfilePath = "$dropboxPath$ProfileSubfolder"
 Write-DarkYellow "$($DryRun ? "DRYRUN: Pretend " : $null)Establishing CloudProfile environment variable as $dropboxProfilePath"
 if(-not $DryRun) {
   [Environment]::SetEnvironmentVariable('CloudProfile',"$dropboxProfilePath",'Machine')
-  if($env:CloudProfile) {
+  if($?) {
     Write-Green "`$env:CloudProfile=$env:CloudProfile"
   }
   else {

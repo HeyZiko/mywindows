@@ -50,8 +50,7 @@ if($sshAgentService.StartupType -ne 'Disabled') {
 Write-DarkYellow "$($DryRun ? "DRYRUN: Pretend " : $null)Setting ssh-agent service startup-type to manual"
 if(-not $DryRun) {
   $sshAgentService | Set-Service -StartupType Manual
-  $sshAgentService = Get-Service ssh-agent
-  if($sshAgentService.StartupType -eq 'Manual') {
+  if($?) {
     Write-Green "ssh-agent startup-type set to $($sshAgentService.StartupType)"
   }
   else {
