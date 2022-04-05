@@ -59,7 +59,16 @@ if($(Wait-Choose "yn" -showOptions) -eq 'y') {
       $pwshFile = "-File $scriptWithArgs"
 
       # Run as admin
-      Start-Process -Wait -Verb Runas -FilePath pwsh -ArgumentList "$pwshExecutionPolicy $pwshNoProfile $pwshFile"
+      try {
+        Start-Process -Wait -Verb Runas -FilePath pwsh -ArgumentList "$pwshExecutionPolicy $pwshNoProfile $pwshFile"
+      }
+      catch {
+        # This might be a red herring. Read more: https://stackoverflow.com/a/58721935/1876622
+        $ignoreError = "This command cannot be run completely because the system cannot find all the information required."
+        if(($Error.Count -gt 0) -and ($Error[$Error.Count-1].Exception.Message -ne $ignoreError)) {
+          Write-Red $Error[$Error.Count-1].Exception.Message
+        }
+      }
     }
     else {
       & $script -DryRun:$DryRun
