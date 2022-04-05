@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Credit: Curtis Konelsky
+  Credit: Curtis Konelsky (@tricus)
   Install software packages using `winget` package manager.
 
 	See: https://docs.microsoft.com/en-us/windows/package-manager/winget/
@@ -136,36 +136,55 @@ $installedArray = $installed -split "\n"
 		#
 		$pkg = [Regex]::Escape("$_")
 		
+		$doInstall = $false
+		$doUpdate = $false
 		$installedPkg = $installedArray -match $pkg
 		if (($installedPkg) -or ((& $winget "list" "--id" "$_") -match $pkg)) {
+			$doInstall = $true
+
 			if ($installedPkg -match "((\d+\.){2,4}(\s|...)+){2,}\.*winget$") {
-				if ($DryRun) {
-					Write-Yellow "Would attempt to upgrade package: $_"
-				}
-				else {
-					Write-Yellow "Upgrade package $($_)?"
-					$result = Wait-Choose "yn" -showOptions
-					if ($result -eq 'y') {
-						Write-Green "Upgrading package $_"
-						& "$winget" "upgrade" "$_"
-					}
-					else {
-						Write-DarkYellow "Skipping upgrade of $_"
-					}
-				}
+				$doUpdate = $true
+				$doInstall = $false
 			}
 			else {
 				Write-Green "$_ already installed; no upgrades available."
+				$doUpdate = $false
+				$doInstall = $false
 			}
 		}
-		else {
+
+		if($doUpdate) {
+			if ($DryRun) {
+				Write-Yellow "Would attempt to upgrade package: $_"
+			}
+			else {
+				Write-Yellow "Upgrade package $($_)?"
+				if ($(Wait-Choose "yn" -showOptions) -eq 'y') {
+					Write-Green "Upgrading package $_"
+					$upgradeResult = & "$winget" "upgrade" "$_"
+
+					# Sometimes, the upgrade doesn't work because the package installation wasn't through winget.
+					# In that case, we need to install instead of upgrade.
+					if($upgradeResult -contains "No applicable update found") {
+						Write-Yellow "Winget couldn't upgrade the package. Attempting a re-install?"
+						if ($(Wait-Choose "yn" -showOptions) -eq 'y') {
+							$doInstall = $true
+						}
+					}
+				}
+				else {
+					Write-DarkYellow "Skipping upgrade of $_"
+				}
+			}
+		}
+
+		if($doInstall) {
 			if ($DryRun) {
 				Write-Yellow "Would attempt to install package: $_"
 			} 
 			else {
 				Write-Yellow "Install package $($_)?"
-				$result = Wait-Choose "yn" -showOptions
-				if ($result -eq 'y') {
+				if ($(Wait-Choose "yn" -showOptions) -eq 'y') {
 					Write-Green "Installing package $_"
 					& "$winget" "install" "$_"
 				}

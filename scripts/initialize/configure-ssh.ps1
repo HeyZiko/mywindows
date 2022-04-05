@@ -21,7 +21,6 @@ Write-White "Registering valid git destinations."
 if(-not $DryRun) {
   ssh git@github.com
   ssh git@bitbucket.org
-  ssh git@heroku.org
   ssh git@ssh.dev.azure.com
 }
 

@@ -40,31 +40,29 @@ Write-White "Typically this is done when first setting up a new machine or when 
 if($(Wait-Choose "yn" -showOptions) -eq 'y') {
   foreach ($script in Get-ChildItem "$PSScriptRoot\scripts\initialize" -Filter "env*.ps1")
   {
+    $runElevated = $false
+
     Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Running $script"
     $identity = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
     $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
     if (-not $identity.IsInRole($adminRole)) {
       Write-DarkYellow "Execution context doesn't have admin privileges. $($DryRun ? "DRYRUN: Pretend " : $null)Attempting to elevate."
+      $runElevated = !$DryRun
+    }
 
+    if ($runElevated) {
       $scriptWithArgs = "$script $($DryRun ? "-DryRun" : $null)" 
       Write-White "Running $scriptWithArgs"
 
       $pwshExecutionPolicy = "-ExecutionPolicy Bypass"
       $pwshNoProfile = "-NoProfile"
       $pwshFile = "-File $scriptWithArgs"
-      $procArgumentList = "$pwshExecutionPolicy $pwshNoProfile $pwshFile"
 
-      if($DryRun) {
-        # In Dry-Run mode, don't elevate to run as admin
-        Start-Process -Wait -FilePath pwsh -ArgumentList $procArgumentList
-      }
-      else {
-        # Run as admin
-        Start-Process -Wait -Verb Runas -FilePath pwsh -ArgumentList $procArgumentList
-      }
+      # Run as admin
+      Start-Process -Wait -Verb Runas -FilePath pwsh -ArgumentList "$pwshExecutionPolicy $pwshNoProfile $pwshFile"
     }
     else {
-      . $script -DryRun:$DryRun
+      & $script -DryRun:$DryRun
     }
   }
 }
@@ -79,7 +77,7 @@ if($(Wait-Choose "yn" -showOptions) -eq 'y'){
     # Skip env scripts, which needed elevation and were run in a previous block
     if($script -notlike "*env-*") {
       Write-White "Running $script -DryRun:$DryRun"
-      . $script -DryRun:$DryRun
+      & $script -DryRun:$DryRun
     }
   }  
 }
@@ -91,7 +89,7 @@ if($(Wait-Choose "yn" -showOptions) -eq 'y'){
   foreach ($script in Get-ChildItem "$PSScriptRoot\scripts\maintain" -Filter "*.ps1")
   {
     Write-White "Running $script -DryRun:$DryRun"
-    . $script -DryRun:$DryRun
+    & $script -DryRun:$DryRun
 }
 }
 
