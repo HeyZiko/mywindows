@@ -24,6 +24,18 @@ New-Alias checkout "git checkout"
 function src { set-location "c:\src\symend-deployments" }
 New-Alias vscode code
 
+#=== Media aliases: Manage media from the CLI
+# https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+# Send-VirtualKey is a ps1 script that runs unmanaged code (user32.dll),
+#  therefore it's not kept in the MyWindows repo. Instead, it's in the cloudprofile bin folder.
+function next { Send-VirtualKey -KeyCode 0xB0 } # VK_MEDIA_NEXT_TRACK
+New-Alias skip next
+function prev { Send-VirtualKey -KeyCode @(0xB1, 0xB1) } # VK_MEDIA_PREV_TRACK
+function replay {Send-VirtualKey -KeyCode 0xB1 } # VK_MEDIA_PREV_TRACK
+function stop { Send-VirtualKey -KeyCode 0xB2 } # VK_MEDIA_STOP
+function pause { Send-VirtualKey -KeyCode 0xB3 } # VK_MEDIA_PLAY_PAUSE
+New-Alias play pause
+
 #=== Establish the global git include if it doesn't already exist. 
 #==== It would have been preferable to use the environment variable directly in the git config, but git doesn't expand envvars grrrr.
 $MyWindowsConfigNix = $env:MyWindowsConfig.Replace("\","/")
