@@ -3,12 +3,12 @@ Mozilla.Firefox
 
 ### System Utilities ###
 # 7zip.7zip
-# peazip #Included as a portable app
-# AxCrypt.AxCrypt #Included as a portable app
-# Adobe.Acrobat.Reader.32-bit
-# PDFsam.PDFsam #Included as a portable app
+peazip
+# AxCrypt.AxCrypt #Also included as a portable app
+Adobe.Acrobat.Reader.32-bit
+PDFsam.PDFsam
 # ElaborateBytes.VirtualCloneDrive #Not as important these days
-# Notepad++.Notepad++ #Included as a portable app
+Notepad++.Notepad++ 
 Microsoft.PowerToys
 Microsoft.MouseWithoutBorders
 # AcroSoftware.CutePDFWriter
@@ -22,8 +22,8 @@ SlackTechnologies.Slack
 # TeamViewer.TeamViewer.Host
 
 ### Art ###
-# GIMP.GIMP
-# Inkscape.Inkscape
+GIMP.GIMP
+Inkscape.Inkscape
 
 ### Development ###
 Microsoft.VisualStudioCode
@@ -31,7 +31,7 @@ Docker.DockerDesktop
 Python.Python.3
 # Microsoft.AzureDataStudio
 dbeaver.dbeaver
-# WinMerge.WinMerge #Included as a portable app
+WinMerge.WinMerge
 # Microsoft.AzureCLI
 # Microsoft.AzureCosmosEmulator
 # Microsoft.AzureDataCLI
@@ -49,3 +49,4 @@ GitHub.GitLFS
 # Atlassian.Sourcetree
 # GitHub.GitHubDesktop
 GnuWin32.Make
+

@@ -136,7 +136,12 @@ $installedArray = $installed -split "\n"
 		#
 		$pkg = [Regex]::Escape("$_")
 		
-		$doInstall = $false
+    # Default position is to install the package, but first check if it exists.
+    # If so, check if it should be updated.
+    # Proceed with installation if it's not installed;
+    # Proceed with update if an update is available;
+    # Otherwise, skip the package.
+		$doInstall = $true
 		$doUpdate = $false
 		$installedPkg = $installedArray -match $pkg
 		if (($installedPkg) -or ((& $winget "list" "--id" "$_") -match $pkg)) {
