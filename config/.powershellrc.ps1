@@ -24,7 +24,6 @@ New-Alias push "git push"
 New-Alias checkout "git checkout"
 
 #=== Dev aliases
-function src { set-location "c:\src\symend-deployments" }
 New-Alias vscode code
 
 #=== Media aliases: Manage media from the CLI

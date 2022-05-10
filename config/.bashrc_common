@@ -5,9 +5,10 @@
 
 #=== Establish a nix variant of the envvar $MyWindowsConfig, replacing windows paths with nix paths:
 export MyWindowsConfigNix=$(echo $MyWindowsConfig | sed 's/\\/\//g' | sed 's/C:/\/c/g')
+export MyWindowsScriptsNix=$(echo $MyWindowsScripts | sed 's/\\/\//g' | sed 's/C:/\/c/g')
 
 #=== Folder aliases
-alias mywindows="cd $MyWindowsScripts"
+alias mywindows="cd $MyWindowsScriptsNix"
 
 #=== Common CLI aliases
 alias ls='ls --almost-all --color --classify'
@@ -33,7 +34,6 @@ alias push="git push"
 alias checkout="git checkout"
 
 #=== Dev aliases 
-alias src="cd /c/src/symend-deployments"
 alias vscode="code"
 
 #=== Establish the global git include if it doesn't already exist. 
