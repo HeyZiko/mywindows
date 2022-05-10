@@ -4,6 +4,9 @@
 #if (Test-Path $env:MyWindowsConfig\.powershellrc.ps1) { . $env:MyWindowsConfig\.powershellrc.ps1 }
 #===
 
+#== Folder aliases
+function mywindows { set-location "$env:MyWindowsScripts" }
+
 #== Common linux commands
 New-Alias which get-command
 New-Alias less get-content

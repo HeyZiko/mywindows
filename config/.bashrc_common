@@ -6,6 +6,9 @@
 #=== Establish a nix variant of the envvar $MyWindowsConfig, replacing windows paths with nix paths:
 export MyWindowsConfigNix=$(echo $MyWindowsConfig | sed 's/\\/\//g' | sed 's/C:/\/c/g')
 
+#=== Folder aliases
+alias mywindows="cd $MyWindowsScripts"
+
 #=== Common CLI aliases
 alias ls='ls --almost-all --color --classify'
 alias grep='grep -in'
