@@ -16,6 +16,9 @@ Microsoft.WindowsTerminal
 Microsoft.PowerShell
 JanDeDobbeleer.OhMyPosh
 
+### Analysis ###
+Microsoft.PowerBI
+
 ### Comms ###
 Microsoft.Teams
 SlackTechnologies.Slack
@@ -50,3 +53,5 @@ GitHub.GitLFS
 # GitHub.GitHubDesktop
 GnuWin32.Make
 
+### Entertainment ###
+Spotify.Spotify
