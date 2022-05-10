@@ -1,13 +1,17 @@
 <#
 .SYNOPSIS
-  Configures bash_profile to read from our config location.
+  Configures .vimrc to read from our config location.
 
 .PARAMETER DryRun
-	Display what actions would be taken but don't actually do them.
+  Display what actions would be taken but don't actually do them.
 
 .LINK
-	https://github.com/HeyZiko/mywindows/
+  https://github.com/HeyZiko/mywindows/
 #>
+
+param (
+  [alias("d")][switch]$DryRun
+)
 
 . "$env:MyWindowsScripts\common\start-execution.ps1"
 

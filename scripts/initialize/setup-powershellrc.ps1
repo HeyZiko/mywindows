@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Configures bash_profile to read from our config location.
+  Configures powershell to read from our config location on pwsh startup.
 
 .PARAMETER DryRun
 	Display what actions would be taken but don't actually do them.
