@@ -98,8 +98,8 @@ else {
 }
 
 "Gathering installed packages list..."
-# If script pauses here, type Y and press Enter
-# winget requires accepting terms and sending geographic location id
+# winget requires accepting terms and sending geographic location id:
+"NOTE: If script hangs here, type Y and press Enter"
 $installed = (& "$winget" "list")
 if ( -not $? ) {
 	Write-Red "ERROR: tried running 'winget list' but failed: code=$? result=$installed"
