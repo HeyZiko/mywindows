@@ -15,7 +15,7 @@ $fileToUpdate = "settings.json"
 # For the latest Windows Terminal settings.json target, see https://docs.microsoft.com/en-us/windows/terminal/install#settings-json-file"
 $target = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\$fileToUpdate";
 $source = "$env:MyWindowsConfig\.windows-terminal.settings.json"
-$verificationContent = "574e775e-4f2a-5b96-ac1e-a2962a402336"
+$verificationContent = "MYWINDOWS_VERIFICATION_TEXT"
 
 Write-White "
 ========
