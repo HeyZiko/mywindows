@@ -25,6 +25,7 @@ New-Alias checkout "git checkout"
 
 #=== Dev aliases
 New-Alias vscode code
+function src { set-location "~\source"}
 
 #=== Media aliases: Manage media from the CLI
 # https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes

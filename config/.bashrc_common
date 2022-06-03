@@ -35,6 +35,7 @@ alias checkout="git checkout"
 
 #=== Dev aliases 
 alias vscode="code"
+alias src="cd ~/source"
 
 #=== Establish the global git include if it doesn't already exist. 
 #==== It would have been preferable to use the environment variable directly in the git config, but git doesn't expand envvars grrrr.
