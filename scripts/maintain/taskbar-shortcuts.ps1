@@ -5,6 +5,9 @@
 .PARAMETER DryRun
 	Display what actions would be taken but don't actually do them.
 
+.PARAMETER UpdatesOnly
+  Parameter for symmetry. Has no effect on the script.
+
 .LINK
 	https://github.com/HeyZiko/mywindows/
 #>
