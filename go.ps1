@@ -3,36 +3,43 @@
   Runs the mywindows configuration
 
 .DESCRIPTION
-	Runs the mywindows configuration scripts with feedback from the user.
-	Note that the environment scripts require elevated permission.
+  Runs the mywindows configuration scripts with feedback from the user.
+  Note that the environment scripts require elevated permission.
   TODO: Instead of all the user prompting, use switches across all of the scripts to drive the process.
+  To see what each parameter means, run the script with the -?? parameter
 
 .PARAMETER DryRun (d)
-	Display what actions would be taken but don't actually do them.
+  Display what actions would be taken but don't actually do them.
 
 .PARAMETER EnvSetup (e) #TODO
-	Execute environment variable and other low-level system configuration scripts.
+  Execute environment variable and other low-level system configuration scripts.
 
 .PARAMETER Initialization (i) #TODO
-	Execute initialization scripts that are typically done as one-time setups.
+  Execute initialization scripts that are typically done as one-time setups.
 
 .PARAMETER Maintenance (m) #TODO
-	Execute maintenance scripts that are typically done as one-time setups.
+  Execute maintenance scripts that are typically done as one-time setups.
 
 .PARAMETER MaintenanceUpdates (mu)
-	Only execute software update maintenance scripts, and don't prompt for each software patch.
+  Only execute software update maintenance scripts, and don't prompt for each software patch.
 
 .LINK
-	https://github.com/HeyZiko/mywindows/
+  https://github.com/HeyZiko/mywindows/
 #>
 
 param (
+  [alias("??")][switch]$Help,
   [alias("d")][switch]$DryRun,
   #[alias("e")][switch]$EnvSetup,
   #[alias("i")][switch]$Initialization,
   [alias("m")][switch]$Maintenance,
   [alias("mu")][switch]$MaintenanceUpdates #Maintenance only, Winget updates only
 )
+
+if($Help) {
+  Get-Help "$PSScriptRoot\go.ps1" -Detailed
+  Return
+}
 
 . "$PSScriptRoot\scripts\common\start-execution.ps1"
 
