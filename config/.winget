@@ -15,6 +15,7 @@ Microsoft.MouseWithoutBorders
 Microsoft.WindowsTerminal
 Microsoft.PowerShell
 JanDeDobbeleer.OhMyPosh
+wkhtmltopdf.wkhtmltox
 
 ### Analysis ###
 Microsoft.PowerBI
@@ -31,7 +32,7 @@ Inkscape.Inkscape
 ### Development ###
 Microsoft.VisualStudioCode
 Docker.DockerDesktop
-Python.Python.3
+Python.Python.3.9
 # Microsoft.AzureDataStudio
 dbeaver.dbeaver
 WinMerge.WinMerge
