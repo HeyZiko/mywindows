@@ -33,9 +33,12 @@ Inkscape.Inkscape
 Microsoft.VisualStudioCode
 Docker.DockerDesktop
 Python.Python.3.9
+OpenJS.NodeJS
+Yarn.Yarn
 # Microsoft.AzureDataStudio
 dbeaver.dbeaver
 WinMerge.WinMerge
+Postman.Postman
 # Microsoft.AzureCLI
 # Microsoft.AzureCosmosEmulator
 # Microsoft.AzureDataCLI
