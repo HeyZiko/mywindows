@@ -152,7 +152,7 @@ $installedArray = $installed -split "\n"
     if (($installedPkg) -or ((& $winget "list" "--id" "$_") -match $pkg)) {
       $doInstall = $true
 
-      if ($installedPkg -match "((\d+\.){2,4}(\s|...)+){2,}\.*winget$") {
+      if ($installedPkg -match "$pkg\s*((\d+\.){2,4}(\s|...)+){2,}\.*winget$") {
         $doUpdate = $true
         $doInstall = $false
       }
