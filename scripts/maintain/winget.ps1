@@ -114,9 +114,10 @@ $installedArray = $installed -split "\n"
 
 # Install packages
 @(Get-Content $packages) | ForEach-Object {
+  $pkg = $_.Trim() # Get rid of excess spaces
   # Lines starting with '#' are treated as comments and are echoed to screen as are blank lines
-  if (($_ -like '#*') -or ([string]::IsNullOrWhiteSpace($_))) {
-    Write-DarkCyan "$_"
+  if (($pkg -like '#*') -or ([string]::IsNullOrWhiteSpace($pkg))) {
+    Write-DarkCyan "$pkg"
   }
  else {
     # Check if candidate package is already installed, in two ways:
@@ -138,7 +139,7 @@ $installedArray = $installed -split "\n"
     # ----------------------------------------------------------
     # Mozilla Firefox Mozilla.Firefox 95.0    98.0.2      winget
     #
-    $pkg = [Regex]::Escape("$_")
+    $pkgEscapedRegex = [Regex]::Escape("$pkg")
     
     # Default position is to install the package, but first check if it exists.
     # If so, check if it should be updated.
@@ -147,17 +148,17 @@ $installedArray = $installed -split "\n"
     # Otherwise, skip the package.
     $doInstall = $true
     $doUpdate = $false
-	$forceUpdates = $false
-    $installedPkg = $installedArray -match $pkg
-    if (($installedPkg) -or ((& $winget "list" "--id" "$_") -match $pkg)) {
+	  $forceUpdates = $false
+    $installedPkg = $installedArray -match $pkgEscapedRegex
+    if (($installedPkg) -or ((& $winget "list" "--id" "$pkg") -match $pkgEscapedRegex)) {
       $doInstall = $true
 
-      if ($installedPkg -match "$pkg\s*((\d+\.){2,4}(\s|...)+){2,}\.*winget$") {
+      if ($installedPkg -match "$pkgEscapedRegex\s*((\d+\.){2,4}(\s|...)+){2,}\.*winget$") {
         $doUpdate = $true
         $doInstall = $false
       }
       else {
-        Write-Green "$_ already installed; no upgrades available."
+        Write-Green "$pkg already installed; no upgrades available."
         $doUpdate = $false
         $doInstall = $false
       }
@@ -171,13 +172,13 @@ $installedArray = $installed -split "\n"
 
     if($doUpdate) {
       if ($DryRun) {
-        Write-Yellow "Would attempt to upgrade package: $_"
+        Write-Yellow "Would attempt to upgrade package: $pkg"
       }
       else {
-        Write-Yellow "Upgrade package $($_)$($forceUpdates ? $null : "?")"
+        Write-Yellow "Upgrade package $($pkg)$($forceUpdates ? $null : "?")"
         if (($forceUpdates) -or ($(Wait-Choose "yn" -showOptions) -eq 'y')) {
-          Write-Green "Upgrading package $_"
-          $upgradeResult = & "$winget" "upgrade" "$_"
+          Write-Green "Upgrading package $pkg"
+          $upgradeResult = & "$winget" "upgrade" "$pkg"
 
           # Sometimes, the upgrade doesn't work because the package installation wasn't through winget.
           # In that case, we need to install instead of upgrade.
@@ -189,23 +190,23 @@ $installedArray = $installed -split "\n"
           }
         }
         else {
-          Write-DarkYellow "Skipping upgrade of $_"
+          Write-DarkYellow "Skipping upgrade of $pkg"
         }
       }
     }
 
     if($doInstall) {
       if ($DryRun) {
-        Write-Yellow "Would attempt to install package: $_"
+        Write-Yellow "Would attempt to install package: $pkg"
       } 
       else {
-        Write-Yellow "Install package $($_)?"
+        Write-Yellow "Install package $($pkg)?"
         if ($(Wait-Choose "yn" -showOptions) -eq 'y') {
-          Write-Green "Installing package $_"
-          & "$winget" "install" "$_"
+          Write-Green "Installing package $pkg"
+          & "$winget" "install" "$pkg" 
         }
         else {
-          Write-DarkYellow "Skipping package $_"
+          Write-DarkYellow "Skipping package $pkg"
         }
       }
     }
