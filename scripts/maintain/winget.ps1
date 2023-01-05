@@ -114,100 +114,130 @@ $installedArray = $installed -split "\n"
 
 # Install packages
 @(Get-Content $packages) | ForEach-Object {
-  $pkg = $_.Trim() # Get rid of excess spaces
-  # Lines starting with '#' are treated as comments and are echoed to screen as are blank lines
-  if (($pkg -like '#*') -or ([string]::IsNullOrWhiteSpace($pkg))) {
-    Write-DarkCyan "$pkg"
+
+  # If the line starts with #, it's a comment. Print it and move on to the next item.
+  if ($_ -like '#*') { 
+    Write-DarkCyan "$_"
+    Return # Inside a ForEach-Object loop, Return behaves like a continue. See https://stackoverflow.com/a/7763698/1876622 
   }
- else {
-    # Check if candidate package is already installed, in two ways:
-    # (1) check if package name appears in `winget list` output (previously captured in $installed variable)
-    # (2) check if package name appears when doing a specific query by exact id: `winget list --id <id>'
-    # Why isn't (1) good enough?  Because the ids can differ!
-    # `winget list` reports the ids from Windows "Apps & features" list, whereas
-    # `winget list --id <id>` reports the id that the winget package has in its manifest
-    #
-    # Example:
-    #
-    # $ winget.exe list
-    # Name                          Id                                 Version  Available   Source
-    # --------------------------------------------------------------------------------------------
-    # Mozilla Firefox (x64 en-US)   Mozilla Firefox 95.0 (x64 en-US)   95.0     98.0.2
-    #
-    # $ winget.exe list --id Mozilla.Firefox
-    # Name            Id              Version Available   Source
-    # ----------------------------------------------------------
-    # Mozilla Firefox Mozilla.Firefox 95.0    98.0.2      winget
-    #
-    $pkgEscapedRegex = [Regex]::Escape("$pkg")
-    
-    # Default position is to install the package, but first check if it exists.
-    # If so, check if it should be updated.
-    # Proceed with installation if it's not installed;
-    # Proceed with update if an update is available;
-    # Otherwise, skip the package.
+
+  # If the line is null or empty, move on to the next item.
+  if ([string]::IsNullOrWhiteSpace($_)) {
+    Return
+  } 
+
+  $pkgArray = $_ -split "-v" -split "--version" # Split on the delimiters -v and --version. 
+  $pkg = $pkgArray[0] # The first entry is the package itself. 
+  $version = $pkgArray[1] # The second entry is the target version, if specified
+
+  # If the package portion is null or empty, move on to the next item.
+  if ([string]::IsNullOrWhiteSpace($pkg)) { 
+    Return
+  }
+  else {
+    # Get rid of excess whitespace.
+    $pkg = $pkg.Trim()
+  }
+
+  $versionPrefix = ""
+  if ([string]::IsNullOrWhiteSpace($version)) {
+    # Set the version to an empty string.
+    $version = ""
+    $versionPrefix = ""
+  }
+  else {
+    # Get rid of excess whitespace
+    $version = $version.Trim()
+    $versionPrefix = "-v"
+  }
+
+  # Check if candidate package is already installed, in two ways:
+  # (1) check if package name appears in `winget list` output (previously captured in $installed variable)
+  # (2) check if package name appears when doing a specific query by exact id: `winget list --id <id>'
+  # Why isn't (1) good enough?  Because the ids can differ!
+  # `winget list` reports the ids from Windows "Apps & features" list, whereas
+  # `winget list --id <id>` reports the id that the winget package has in its manifest
+  #
+  # Example:
+  #
+  # $ winget.exe list
+  # Name                          Id                                 Version  Available   Source
+  # --------------------------------------------------------------------------------------------
+  # Mozilla Firefox (x64 en-US)   Mozilla Firefox 95.0 (x64 en-US)   95.0     98.0.2
+  #
+  # $ winget.exe list --id Mozilla.Firefox
+  # Name            Id              Version Available   Source
+  # ----------------------------------------------------------
+  # Mozilla Firefox Mozilla.Firefox 95.0    98.0.2      winget
+  #
+  $pkgEscapedRegex = [Regex]::Escape("$pkg")
+  
+  # Default position is to install the package, but first check if it exists.
+  # If so, check if it should be updated.
+  # Proceed with installation if it's not installed;
+  # Proceed with update if an update is available;
+  # Otherwise, skip the package.
+  $doInstall = $true
+  $doUpdate = $false
+  $forceUpdates = $false
+  $installedPkg = $installedArray -match $pkgEscapedRegex
+  if (($installedPkg) -or ((& $winget "list" "--id" "$pkg") -match $pkgEscapedRegex)) {
     $doInstall = $true
-    $doUpdate = $false
-	  $forceUpdates = $false
-    $installedPkg = $installedArray -match $pkgEscapedRegex
-    if (($installedPkg) -or ((& $winget "list" "--id" "$pkg") -match $pkgEscapedRegex)) {
-      $doInstall = $true
 
-      if ($installedPkg -match "$pkgEscapedRegex\s*((\d+\.){2,4}(\s|...)+){2,}\.*winget$") {
-        $doUpdate = $true
-        $doInstall = $false
-      }
-      else {
-        Write-Green "$pkg already installed; no upgrades available."
-        $doUpdate = $false
-        $doInstall = $false
-      }
+    if ($installedPkg -match "$pkgEscapedRegex\s*((\d+\.){2,4}(\s|...)+){2,}\.*winget$") {
+      $doUpdate = $true
+      $doInstall = $false
     }
+    else {
+      Write-Green "$pkg already installed; no upgrades available."
+      $doUpdate = $false
+      $doInstall = $false
+    }
+  }
 
-	# Check if we've been instructed to only perform updates
-	if($UpdatesOnly) { 
-		$doInstall = $false 
-		$forceUpdates = $true
-	}
+# Check if we've been instructed to only perform updates
+if($UpdatesOnly) { 
+  $doInstall = $false 
+  $forceUpdates = $true
+}
 
-    if($doUpdate) {
-      if ($DryRun) {
-        Write-Yellow "Would attempt to upgrade package: $pkg"
-      }
-      else {
-        Write-Yellow "Upgrade package $($pkg)$($forceUpdates ? $null : "?")"
-        if (($forceUpdates) -or ($(Wait-Choose "yn" -showOptions) -eq 'y')) {
-          Write-Green "Upgrading package $pkg"
-          $upgradeResult = & "$winget" "upgrade" "$pkg"
+  if($doUpdate) {
+    if ($DryRun) {
+      Write-Yellow "Would attempt to upgrade package: $pkg"
+    }
+    else {
+      Write-Yellow "Upgrade package $($pkg)$($forceUpdates ? $null : "?")"
+      if (($forceUpdates) -or ($(Wait-Choose "yn" -showOptions) -eq 'y')) {
+        Write-Green "Upgrading package $pkg $versionPrefix $version"
+        $upgradeResult = & "$winget" "upgrade" "$pkg" $versionPrefix $version
 
-          # Sometimes, the upgrade doesn't work because the package installation wasn't through winget.
-          # In that case, we need to install instead of upgrade.
-          if($upgradeResult -contains "No applicable update found") {
-            Write-Yellow "Winget couldn't upgrade the package. Attempting a re-install?"
-            if ($(Wait-Choose "yn" -showOptions) -eq 'y') {
-              $doInstall = $true
-            }
+        # Sometimes, the upgrade doesn't work because the package installation wasn't through winget.
+        # In that case, we need to install instead of upgrade.
+        if($upgradeResult -contains "No applicable update found") {
+          Write-Yellow "Winget couldn't upgrade the package. Attempting a re-install?"
+          if ($(Wait-Choose "yn" -showOptions) -eq 'y') {
+            $doInstall = $true
           }
         }
-        else {
-          Write-DarkYellow "Skipping upgrade of $pkg"
-        }
+      }
+      else {
+        Write-DarkYellow "Skipping upgrade of $pkg"
       }
     }
+  }
 
-    if($doInstall) {
-      if ($DryRun) {
-        Write-Yellow "Would attempt to install package: $pkg"
-      } 
+  if($doInstall) {
+    if ($DryRun) {
+      Write-Yellow "Would attempt to install package: $pkg"
+    } 
+    else {
+      Write-Yellow "Install package $($pkg)?"
+      if ($(Wait-Choose "yn" -showOptions) -eq 'y') {
+        Write-Green "Installing package $pkg $versionPrefix $version"
+        & "$winget" "install" "$pkg" $versionPrefix $version
+      }
       else {
-        Write-Yellow "Install package $($pkg)?"
-        if ($(Wait-Choose "yn" -showOptions) -eq 'y') {
-          Write-Green "Installing package $pkg"
-          & "$winget" "install" "$pkg" 
-        }
-        else {
-          Write-DarkYellow "Skipping package $pkg"
-        }
+        Write-DarkYellow "Skipping package $pkg"
       }
     }
   }

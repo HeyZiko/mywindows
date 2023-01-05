@@ -38,7 +38,7 @@ Yarn.Yarn
 # Microsoft.AzureDataStudio
 dbeaver.dbeaver
 WinMerge.WinMerge
-Postman.Postman
+Postman.Postman -v 9.31.0
 # Microsoft.AzureCLI
 # Microsoft.AzureCosmosEmulator
 # Microsoft.AzureDataCLI
