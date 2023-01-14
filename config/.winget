@@ -16,6 +16,7 @@ Microsoft.WindowsTerminal
 Microsoft.PowerShell
 JanDeDobbeleer.OhMyPosh
 wkhtmltopdf.wkhtmltox
+Logitech.UnifyingSoftware
 
 ### Analysis ###
 Microsoft.PowerBI
@@ -34,7 +35,6 @@ Microsoft.VisualStudioCode
 Docker.DockerDesktop
 Python.Python.3.9
 OpenJS.NodeJS
-Yarn.Yarn
 # Microsoft.AzureDataStudio
 dbeaver.dbeaver
 WinMerge.WinMerge
