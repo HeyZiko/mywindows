@@ -50,9 +50,8 @@ Import-Module oh-my-posh
 oh-my-posh init pwsh --config "$env:MyWindowsConfig\.ohmyposh.json" | Invoke-Expression
 
 #=== Register ssh rsa keys so that the password isn't required at every git origin interaction
-### This works in bash 
 # Start-Service ssh-agent
 
 # Get-ChildItem -Path "$env:CloudProfile\.ssh\" -Recurse -Filter "id_rsa" | Foreach-Object {
-#   ssh-add $_
+#  ssh-add $_
 # }
