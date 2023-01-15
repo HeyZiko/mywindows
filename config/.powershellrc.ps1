@@ -51,7 +51,7 @@ oh-my-posh init pwsh --config "$env:MyWindowsConfig\.ohmyposh.json" | Invoke-Exp
 
 #=== Start the ssh-agent service, and set git's core.sshCommand location
 Start-Service ssh-agent
-git config --global core.sshcommand $(which ssh)
+git config --global core.sshCommand $(which ssh).Source
 
 #=== Register the ssh rsa keys so that the password isn't required at every git origin interaction
 # Get-ChildItem -Path "$env:CloudProfile\.ssh\" -Recurse -Filter "id_rsa" | Foreach-Object {
