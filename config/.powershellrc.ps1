@@ -49,9 +49,11 @@ Import-Module posh-git
 Import-Module oh-my-posh
 oh-my-posh init pwsh --config "$env:MyWindowsConfig\.ohmyposh.json" | Invoke-Expression
 
-#=== Register ssh rsa keys so that the password isn't required at every git origin interaction
-# Start-Service ssh-agent
+#=== Start the ssh-agent service, and set git's core.sshCommand location
+Start-Service ssh-agent
+git config --global core.sshcommand $(which ssh)
 
+#=== Register the ssh rsa keys so that the password isn't required at every git origin interaction
 # Get-ChildItem -Path "$env:CloudProfile\.ssh\" -Recurse -Filter "id_rsa" | Foreach-Object {
 #  ssh-add $_
 # }
