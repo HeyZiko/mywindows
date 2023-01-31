@@ -5,7 +5,7 @@
 #===
 
 #== Folder aliases
-function mywindows { set-location "$env:MyWindowsScripts" }
+function mywindows { set-location "$env:MyWindowsScripts\.." }
 
 #== Common linux commands
 New-Alias which get-command
@@ -49,9 +49,10 @@ Import-Module posh-git
 Import-Module oh-my-posh
 oh-my-posh init pwsh --config "$env:MyWindowsConfig\.ohmyposh.json" | Invoke-Expression
 
-#=== Start the ssh-agent service, and set git's core.sshCommand location
+#=== Get git working with ssh 
 Start-Service ssh-agent
-git config --global core.sshCommand $(which ssh).Source
+# $env:GIT_SSH = $(which ssh).Source.Replace("\","/") # git works with forward slashes, not backslashes
+git config --global core.sshCommand $(which ssh).Source.Replace("\","/") # git requires Nix-style pathing
 
 #=== Register the ssh rsa keys so that the password isn't required at every git origin interaction
 # Get-ChildItem -Path "$env:CloudProfile\.ssh\" -Recurse -Filter "id_rsa" | Foreach-Object {
