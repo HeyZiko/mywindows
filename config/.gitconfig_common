@@ -15,6 +15,7 @@
   alias = !tput setaf 3 && echo "=== Finding all git aliases. No parameters accepted. ===" && tput sgr0 && echo && git config -l | grep alias
   co = checkout
   cob = checkout -b
+  cfg = config --list --show-origin --show-scope
   b = branch
   mergeff = merge --ff-only
   main = !git checkout main && git pull origin
