@@ -40,7 +40,10 @@ else {
     Write-White "You haven't configured $target yet. Overwrite it now?"
     if ($(Wait-Choose "yn" -showOptions) -eq 'y')
     {
-      Copy-Item $source -Destination $target
+      Write-DarkYellow "$($DryRun ? "DRYRUN: Pretend " : $null)Overwriting Windows Terminal settings."
+      if(-not $DryRun) {
+        Copy-Item $source -Destination $target
+      }
     }
   }
 }
