@@ -55,7 +55,7 @@ if($Maintenance) {
   Write-Yellow "Maintenance mode - Skipping $currentStep."
 }
 else {
-  Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Run the $currentStep?"
+  Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Run the $currentStep ?"
   Write-White "$currentStepContext"
   if($(Wait-Choose "yn" -showOptions) -eq 'y') {
     foreach ($script in Get-ChildItem "$PSScriptRoot\scripts\initialize" -Filter "env*.ps1")
@@ -106,7 +106,7 @@ if($Maintenance) {
   Write-Yellow "Maintenance mode - Skipping $currentStep."
 }
 else {
-  Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Run the $currentStep?"
+  Write-White "$($DryRun ? "DRYRUN: Pretend " : $null)Run the $currentStep ?"
   Write-White "$currentStepContext"
   if($(Wait-Choose "yn" -showOptions) -eq 'y'){
     foreach ($script in Get-ChildItem "$PSScriptRoot\scripts\initialize" -Filter "*.ps1")
