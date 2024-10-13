@@ -8,8 +8,10 @@
   name = Ziko Rajabali
 
 [core]
-  editor = vim # Advanced users only. Need to be fast with the keyboard.
-  #editor = code --wait # Visual Studio Code. Excellent option, but takes a bit longer to load
+  #editor = vim # Advanced users only. Need to be fast with the keyboard.
+  editor = code --wait # Visual Studio Code. Excellent option, but takes a bit longer to load
+  autocrlf = true # Auto-convert line endings between windows and nix for consistency
+
 
 [alias]
   alias = !tput setaf 3 && echo "=== Finding all git aliases. No parameters accepted. ===" && tput sgr0 && echo && git config -l | grep alias
@@ -22,4 +24,7 @@
   logg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
   logfind = !tput setaf 3 && echo "=== Searching git log. Expects a search term as the first argument. Accepts any arguments that work with grep. ===" && tput sgr0 && echo && git logg | grep
   loggrep = logfind
+  
+[push]
+  autoSetupRemote = true # Remove the need for `git push -u origin <branch>` on first upstream push. See https://tomaszs2.medium.com/no-more-git-push-set-upstream-origin-new-branch-2c09c632aa1d
   
