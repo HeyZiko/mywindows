@@ -11,6 +11,7 @@
   #editor = vim # Advanced users only. Need to be fast with the keyboard.
   editor = code --wait # Visual Studio Code. Excellent option, but takes a bit longer to load
   autocrlf = true # Auto-convert line endings between windows and nix for consistency
+  longpaths = true # Allow long paths
 
 
 [alias]
