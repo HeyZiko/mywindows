@@ -22,6 +22,7 @@ New-Alias fetch "git fetch"
 New-Alias pull "git pull"
 New-Alias push "git push"
 New-Alias checkout "git checkout"
+New-Alias github "gh"
 
 #=== Dev aliases
 New-Alias vscode code
