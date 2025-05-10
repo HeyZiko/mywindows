@@ -15,6 +15,7 @@ _These environment variables get set during setup and are required for the solut
 ## Prerequisites
 - Windows powershell (`winget install microsoft.powershell`)
 - git (`winget install git.git`)
-- This repo pulled down locally into a folder that will become the root folder for the aforementioned `$MyWindows*` environment variables
+- This repo needs to be pulled down locally into a folder that will become the root folder for the aforementioned `$MyWindows*` environment variables
+- Windows default execution policy is restricted, but these scripts are unsigned and therefore won't run. To run these scripts, the execution policy will need to be updated (`Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser`)
 
 ## Setup
