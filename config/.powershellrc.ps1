@@ -46,8 +46,6 @@ $MyWindowsConfigNix = $env:MyWindowsConfig.Replace("\","/")
 git config --global include.path $MyWindowsConfigNix/.gitconfig_common
 
 #=== Set up oh-my-posh
-Import-Module posh-git
-Import-Module oh-my-posh
 oh-my-posh init pwsh --config "$env:MyWindowsConfig\.ohmyposh.json" | Invoke-Expression
 
 #=== Get git working with ssh 

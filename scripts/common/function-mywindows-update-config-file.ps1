@@ -58,6 +58,7 @@ function MyWindows-Update-Config-File
   if (-not (Test-Path $Target)) {
     Write-White "No $Target found, $($DryRun ? "DRYRUN: Pretend " : $null)creating it."
     if(-not $DryRun) {
+      New-Item -Path $Target -Force
       $IncludeLineMargined | Set-Content $Target
     }
     Write-Green "$($DryRun ? "DRYRUN: Would have " : $null)Added the following into $Target :"
