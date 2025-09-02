@@ -38,8 +38,9 @@ Inkscape.Inkscape
 
 ### Development ###
 Microsoft.VisualStudioCode
+Anthropic.ClaudeCode
 Docker.DockerDesktop
-Python.Python.3.9
+Python.Python.3.13
 OpenJS.NodeJS
 # Microsoft.AzureDataStudio
 dbeaver.dbeaver
